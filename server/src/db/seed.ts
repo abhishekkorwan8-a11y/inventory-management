@@ -9,7 +9,7 @@
 // ============================================================================
 
 import { nanoid } from 'nanoid';
-import { db, migrate } from './index.js';
+import { db, migrate, tx } from './index.js';
 
 // ---- deterministic PRNG so reseeding is reproducible -----------------------
 function mulberry32(seed: number) {
@@ -128,14 +128,13 @@ function reseed() {
   migrate();
 
   // Wipe any existing demo data (idempotent reseed).
-  const wipe = db.transaction(() => {
+  tx(() => {
     for (const t of ['sale_lines', 'sales', 'purchase_order_lines', 'purchase_orders',
       'stock_movements', 'products', 'suppliers', 'users']) {
       db.prepare(`DELETE FROM ${t} WHERE tenant_id = ?`).run(TENANT_ID);
     }
     db.prepare(`DELETE FROM tenants WHERE id = ?`).run(TENANT_ID);
   });
-  wipe();
 
   db.prepare(`INSERT INTO tenants (id, name) VALUES (?, ?)`).run(TENANT_ID, 'Cornerstone General Store');
 
@@ -276,7 +275,7 @@ function reseed() {
     }
   };
 
-  const run = db.transaction(() => {
+  tx(() => {
     // ---- Day 0: opening stock — one received PO per supplier --------------
     const bySupplier = new Map<string, P[]>();
     for (const p of products) {
@@ -431,8 +430,6 @@ function reseed() {
       }
     }
   });
-
-  run();
 
   // ---- summary -------------------------------------------------------------
   const count = (t: string) =>

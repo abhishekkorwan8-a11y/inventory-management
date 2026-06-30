@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { nanoid } from 'nanoid';
-import { db } from '../db/index.js';
+import { db, tx } from '../db/index.js';
 import { appendMovement } from '../services/movements.js';
 
 export const purchaseOrders = Router();
@@ -68,7 +68,7 @@ purchaseOrders.post('/', (req, res) => {
 
   const id = `po_${nanoid(8)}`;
   const reference = b.reference?.trim() || nextReference(tenantId, 'PO', 'purchase_orders');
-  const tx = db.transaction(() => {
+  tx(() => {
     db.prepare(
       `INSERT INTO purchase_orders (id, tenant_id, supplier_id, reference, status, notes)
        VALUES (?, ?, ?, ?, 'draft', ?)`
@@ -80,7 +80,6 @@ purchaseOrders.post('/', (req, res) => {
       ).run(`pol_${nanoid(8)}`, tenantId, id, l.product_id, Number(l.quantity), Number(l.unit_cost));
     }
   });
-  tx();
   res.status(201).json({ id, reference });
 });
 
@@ -99,7 +98,7 @@ purchaseOrders.post('/:id/receive', (req, res) => {
   if (lines.length === 0) return res.status(400).json({ error: 'This PO has no line items to receive.' });
 
   const receivedAt = new Date().toISOString();
-  const tx = db.transaction(() => {
+  tx(() => {
     for (const l of lines) {
       appendMovement({
         tenantId, productId: l.product_id, movementType: 'PURCHASE_RECEIPT',
@@ -110,6 +109,5 @@ purchaseOrders.post('/:id/receive', (req, res) => {
     db.prepare(`UPDATE purchase_orders SET status = 'received', received_at = ? WHERE id = ?`)
       .run(receivedAt, po.id);
   });
-  tx();
   res.json({ id: po.id, status: 'received', received_at: receivedAt, lines_received: lines.length });
 });

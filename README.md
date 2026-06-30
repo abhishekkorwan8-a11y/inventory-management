@@ -44,9 +44,15 @@ deleted — a correction is itself a new `ADJUSTMENT` movement.
   stock-value chart. Data-dense tables, modals, toasts, loading/empty states.
 - **Backend:** Node.js + Express + TypeScript. Thin, raw-SQL data layer so the
   ledger logic stays explicit and easy to point at.
-- **Database:** SQLite (via `better-sqlite3`) — embedded and zero-config so the
-  demo runs anywhere with no external services. Every table is `tenant_id`-scoped
-  (multi-tenant data model).
+- **Database:** SQLite via Node's **built-in `node:sqlite`** module — embedded,
+  zero-config, and **no native build step** (nothing to compile, so `npm install`
+  works on Windows/macOS/Linux without a C++ toolchain). Every table is
+  `tenant_id`-scoped (multi-tenant data model).
+
+### Requirements
+
+- **Node.js 22.5+** (Node 22 LTS or 24 both work). The app uses the built-in
+  `node:sqlite` module, so no database server and no compiler are needed.
 
 ---
 

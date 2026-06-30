@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { nanoid } from 'nanoid';
-import { db } from '../db/index.js';
+import { db, tx } from '../db/index.js';
 import { appendMovement, checkOversell } from '../services/movements.js';
 
 export const sales = Router();
@@ -79,7 +79,7 @@ sales.post('/', (req, res) => {
   const occurredAt = new Date().toISOString();
   const total = normalized.reduce((sum: number, l: any) => sum + l.quantity * l.unitPrice, 0);
 
-  const tx = db.transaction(() => {
+  tx(() => {
     db.prepare(
       `INSERT INTO sales (id, tenant_id, reference, total, notes, created_at)
        VALUES (?, ?, ?, ?, ?, ?)`
@@ -95,6 +95,5 @@ sales.post('/', (req, res) => {
       });
     }
   });
-  tx();
   res.status(201).json({ id, reference, total: Math.round(total * 100) / 100 });
 });
