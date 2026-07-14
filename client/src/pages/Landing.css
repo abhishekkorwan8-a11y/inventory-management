@@ -1,0 +1,386 @@
+/* Quill landing page — scoped styles (imported by Landing.tsx).
+   Ported from the "Landing Page.dc.html" Claude Design file. */
+
+@keyframes ql-ping {
+  75%, 100% { transform: scale(2.4); opacity: 0; }
+}
+
+.ql-root {
+  --accent: #EC4E02;
+  --accent-hue: 21;
+  min-height: 100vh;
+  background: #F5EEE1;
+  color: #201D18;
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.ql-root ::selection {
+  background: color-mix(in srgb, var(--accent) 25%, transparent);
+}
+
+/* ---------- Nav ---------- */
+.ql-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 22px 28px;
+}
+.ql-logo {
+  font-family: 'Newsreader', serif;
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.ql-logo-dot { color: var(--accent); }
+.ql-nav-links {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  font-size: 14.5px;
+}
+.ql-nav-link {
+  color: #544E44;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.ql-nav-link:hover { color: var(--accent); }
+.ql-nav-cta {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 999px;
+  background: #201D18;
+  color: #FAF7F2;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.ql-nav-cta:hover { background: var(--accent); color: #fff; }
+
+/* ---------- Shared shader host ---------- */
+.ql-shader-host {
+  position: relative;
+  overflow: hidden;
+  border-radius: 48px;
+  border: 1px solid rgba(32, 29, 24, 0.08);
+  background: #FCF7EC;
+  box-shadow: 0 1px 2px rgba(32, 29, 24, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.ql-shader-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* ---------- Shared badge ---------- */
+.ql-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, rgba(252, 247, 236, 0.6));
+  padding: 7px 16px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--accent);
+  backdrop-filter: blur(4px);
+}
+.ql-badge-dot {
+  position: relative;
+  display: flex;
+  width: 8px;
+  height: 8px;
+}
+.ql-badge-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  opacity: 0.75;
+  animation: ql-ping 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.ql-badge-core {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* ---------- Shared buttons ---------- */
+.ql-btn {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 500;
+  border-radius: 999px;
+}
+.ql-btn-primary {
+  gap: 10px;
+  height: 54px;
+  padding: 0 32px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 15.5px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.ql-btn-primary:hover {
+  color: #fff;
+  transform: scale(1.04);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.ql-btn-primary:active { transform: scale(0.97); }
+.ql-btn-secondary {
+  height: 54px;
+  padding: 0 30px;
+  background: rgba(252, 247, 236, 0.75);
+  border: 1px solid rgba(32, 29, 24, 0.14);
+  color: #201D18;
+  font-size: 15.5px;
+  backdrop-filter: blur(4px);
+  transition: border-color 0.2s, background 0.2s;
+}
+.ql-btn-secondary:hover {
+  color: #201D18;
+  border-color: rgba(32, 29, 24, 0.3);
+  background: #FCF7EC;
+}
+.ql-btn-cta {
+  gap: 12px;
+  height: 56px;
+  padding: 0 48px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 16px;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.ql-btn-cta:hover {
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.ql-btn-cta:active { transform: scale(0.96); }
+
+/* ---------- Hero ---------- */
+.ql-hero {
+  max-width: 1360px;
+  margin: 10px auto 0;
+  padding: 0 28px;
+}
+.ql-hero .ql-shader-host { min-height: 680px; }
+.ql-hero .ql-shader-layer { opacity: 0.42; }
+.ql-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 900px;
+  padding: 88px 32px;
+}
+.ql-hero-inner .ql-badge { margin-bottom: 36px; }
+.ql-hero-h1 {
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  font-size: clamp(56px, 7.5vw, 104px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+  text-wrap: balance;
+}
+.ql-hero-p {
+  margin: 0 0 44px;
+  font-size: 19px;
+  line-height: 1.65;
+  color: #6E675C;
+  max-width: 560px;
+  text-wrap: pretty;
+}
+.ql-btn-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.ql-hero-note {
+  margin-top: 28px;
+  font-size: 13px;
+  color: #8A8375;
+}
+
+/* ---------- Features ---------- */
+.ql-features {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 110px 28px 48px;
+}
+.ql-features-head {
+  max-width: 640px;
+  margin-bottom: 52px;
+}
+.ql-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.ql-features-h2 {
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  font-size: clamp(36px, 4vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0;
+  text-wrap: balance;
+}
+.ql-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.ql-card {
+  --mx: 50%;
+  --my: 50%;
+  --go: 0;
+  position: relative;
+  border-radius: 24px;
+  background: #FCF7EC;
+  border: 1px solid rgba(32, 29, 24, 0.08);
+  padding: 30px 28px 34px;
+  overflow: hidden;
+  min-height: 230px;
+  box-shadow: 0 1px 2px rgba(32, 29, 24, 0.04);
+}
+.ql-card-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(260px 260px at var(--mx) var(--my),
+    hsl(var(--accent-hue) 92% 58% / 0.10), transparent 70%);
+  opacity: var(--go);
+  transition: opacity 0.35s;
+}
+.ql-card-border {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 1px;
+  background: radial-gradient(220px 220px at var(--mx) var(--my),
+    hsl(var(--accent-hue) 95% 52% / 0.85), transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: var(--go);
+  transition: opacity 0.35s;
+  pointer-events: none;
+}
+.ql-card-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ql-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.ql-card-h3 {
+  font-family: 'Newsreader', serif;
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+.ql-card-p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.62;
+  color: #6E675C;
+  text-wrap: pretty;
+}
+
+/* ---------- CTA ---------- */
+.ql-cta {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 56px 28px 24px;
+}
+.ql-cta .ql-shader-host { min-height: 600px; }
+.ql-cta .ql-shader-layer { opacity: 0.4; }
+.ql-cta-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 820px;
+  padding: 80px 32px;
+}
+.ql-cta-inner .ql-badge { margin-bottom: 32px; }
+.ql-cta-h2 {
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  font-size: clamp(48px, 6.5vw, 90px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 28px;
+}
+.ql-cta-h2-muted { color: rgba(32, 29, 24, 0.62); }
+.ql-cta-p {
+  margin: 0 0 48px;
+  font-size: 19px;
+  line-height: 1.65;
+  color: #6E675C;
+  max-width: 600px;
+  text-wrap: pretty;
+}
+
+/* ---------- Footer ---------- */
+.ql-footer {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 36px 28px 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  color: #8A8375;
+  font-size: 13.5px;
+}
+.ql-footer-links {
+  display: flex;
+  gap: 24px;
+}
+.ql-footer-link {
+  color: #8A8375;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.ql-footer-link:hover { color: #201D18; }
