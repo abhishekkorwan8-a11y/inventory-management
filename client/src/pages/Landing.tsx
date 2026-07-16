@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, MouseEvent as ReactMouseEvent, CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { registerDitherShader } from '../lib/ditherShader';
+import { initCursor, initPreloader } from '../lib/pageFx';
 import './Landing.css';
 
 // Allow the <dither-shader> custom element in JSX (declared once, project-wide).
@@ -161,9 +162,13 @@ export function Landing() {
   const [dark, setDark] = useState(() => localStorage.getItem('bq-theme') === 'dark');
   const [yearly, setYearly] = useState(false);
   const [activeNav, setActiveNav] = useState('Features');
+  const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     registerDitherShader();
+    const root = rootRef.current ?? document.body;
+    initPreloader(root);
+    return initCursor(root);
   }, []);
 
   const toggleTheme = () => {
@@ -186,7 +191,7 @@ export function Landing() {
   };
 
   return (
-    <div className="bl-root" id="top" data-theme={dark ? 'dark' : 'light'}>
+    <div className="bl-root" id="top" data-theme={dark ? 'dark' : 'light'} ref={rootRef}>
       <div className="bl-nav-spacer" />
 
       {/* Nav */}
