@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Landing } from './pages/Landing';
+import { SignIn } from './pages/SignIn';
 import { Dashboard } from './pages/Dashboard';
 import { Products } from './pages/Products';
 import { ProductDetail } from './pages/ProductDetail';
@@ -15,6 +16,7 @@ export default function App() {
     <Routes>
       {/* Standalone marketing landing page — rendered outside the app Layout */}
       <Route path="/landing" element={<Landing />} />
+      <Route path="/signin" element={<SignIn />} />
       <Route
         path="*"
         element={
