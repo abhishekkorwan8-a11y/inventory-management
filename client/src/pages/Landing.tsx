@@ -1,4 +1,4 @@
-import { useEffect, useState, MouseEvent as ReactMouseEvent, CSSProperties } from 'react';
+import { useEffect, useRef, useState, MouseEvent as ReactMouseEvent, CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { registerDitherShader } from '../lib/ditherShader';
 import './Landing.css';
@@ -42,12 +42,69 @@ const STEPS = [
   { num: '04', title: 'Launch and beyond', body: 'We ship, hand over a CMS you can edit yourself, and stay on call. As your business grows, the site grows with it.', tags: ['CMS handover', 'Training session', 'Ongoing support'] },
 ];
 
+// Portfolio pieces shown in the "Our Work" section. Each `file` is a full
+// standalone template served from /public/work and opened in a new tab.
 const WORK = [
-  { badge: 'Web design' },
-  { badge: 'E-commerce' },
-  { badge: 'Web app' },
-  { badge: 'Branding' },
+  { file: '/work/taxfolio.html', title: 'Taxfolio', industry: 'Tax planning platform', badge: 'Web design' },
+  { file: '/work/orbithr.html', title: 'orbitHR', industry: 'HR SaaS product', badge: 'Web app' },
+  { file: '/work/plinth.html', title: 'PLINTH', industry: 'Furniture brand', badge: 'E-commerce' },
 ];
+
+// ── Footer destinations ───────────────────────────────────────────────────
+// Replace the placeholder URLs below with your real profiles / pages.
+const SOCIAL_LINKS = {
+  x: 'https://x.com/your-handle',
+  linkedin: 'https://linkedin.com/company/your-company',
+  instagram: 'https://instagram.com/your-handle',
+  github: 'https://github.com/your-org',
+};
+const COMPANY_LINKS = [
+  { label: 'About Us', href: '#how' },
+  { label: 'Careers', href: '#cta' },
+  { label: 'Blog', href: '#top' },
+  { label: 'Contact', href: '#cta' },
+];
+const WORK_LINKS = [
+  { label: 'Services', href: '#features' },
+  { label: 'Portfolio', href: '#work' },
+  { label: 'Industries', href: '#industries' },
+  { label: 'Pricing', href: '#pricing' },
+];
+const LEGAL_LINKS = [
+  { label: 'Privacy Policy', href: '#top' },
+  { label: 'Terms & Conditions', href: '#top' },
+];
+
+// A live, scaled-down thumbnail of a full HTML template. The iframe renders at
+// a fixed design width and is scaled to fit its card via a ResizeObserver.
+const PREVIEW_DESIGN_W = 1280;
+function WorkPreview({ src, title }: { src: string; title: string }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.33);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const update = () => setScale(el.clientWidth / PREVIEW_DESIGN_W);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return (
+    <div className="bl-work-frame" ref={wrapRef}>
+      <iframe
+        className="bl-work-iframe"
+        src={src}
+        title={title}
+        loading="lazy"
+        scrolling="no"
+        tabIndex={-1}
+        aria-hidden="true"
+        style={{ width: PREVIEW_DESIGN_W, height: PREVIEW_DESIGN_W * 10 / 16, transform: `scale(${scale})` }}
+      />
+    </div>
+  );
+}
 
 const INDUSTRIES = [
   { name: 'Healthcare', icon: 'M12 6v12M6 12h12M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z' },
@@ -259,23 +316,29 @@ export function Landing() {
           <p className="bl-section-sub">A few of the sites we've designed and shipped for our clients.</p>
         </div>
         <div className="bl-grid-work">
-          {WORK.map((w, i) => (
-            <div key={i} className="bl-work-card" onMouseMove={cardMove} onMouseLeave={cardLeave}>
+          {WORK.map((w) => (
+            <a
+              key={w.file}
+              href={w.file}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bl-work-card"
+              onMouseMove={cardMove}
+              onMouseLeave={cardLeave}
+            >
               <div className="bl-glow bl-glow--work" />
               <div className="bl-border bl-border--work" />
               <div className="bl-work-body">
-                <div className="bl-work-image">
-                  <div className="bl-image-slot">Project preview</div>
-                </div>
+                <WorkPreview src={w.file} title={w.title} />
                 <div className="bl-work-meta">
                   <div>
-                    <h3 className="bl-work-title">Project name</h3>
-                    <div className="bl-work-industry">Client industry</div>
+                    <h3 className="bl-work-title">{w.title}</h3>
+                    <div className="bl-work-industry">{w.industry}</div>
                   </div>
                   <span className="bl-work-badge">{w.badge}</span>
                 </div>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </section>
@@ -390,30 +453,23 @@ export function Landing() {
             <div className="bl-footer-logo">BlackQuill<span className="bl-dot">.</span></div>
             <p className="bl-footer-desc">A web studio that designs, builds, and ships handcrafted websites for brands that care about the details.</p>
             <div className="bl-socials">
-              <a href="#top" aria-label="X / Twitter" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L2.5 2h6.4l4.4 5.9L18.9 2zm-1.1 18h1.7L7.1 3.9H5.3L17.8 20z" /></svg></a>
-              <a href="#top" aria-label="LinkedIn" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-8.5c0-2-.04-4.6-2.8-4.6-2.8 0-3.2 2.2-3.2 4.45V24H8V8z" /></svg></a>
-              <a href="#top" aria-label="Instagram" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" /></svg></a>
-              <a href="#top" aria-label="GitHub" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.3 4.9 18.3 5.2 18.3 5.2c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" /></svg></a>
+              <a href={SOCIAL_LINKS.x} target="_blank" rel="noopener noreferrer" aria-label="X / Twitter" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L2.5 2h6.4l4.4 5.9L18.9 2zm-1.1 18h1.7L7.1 3.9H5.3L17.8 20z" /></svg></a>
+              <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.05c.53-1 1.83-2.2 3.77-2.2 4.03 0 4.78 2.65 4.78 6.1V24h-4v-8.5c0-2-.04-4.6-2.8-4.6-2.8 0-3.2 2.2-3.2 4.45V24H8V8z" /></svg></a>
+              <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" /></svg></a>
+              <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="bl-social"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C17.3 4.9 18.3 5.2 18.3 5.2c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z" /></svg></a>
             </div>
           </div>
           <div className="bl-footer-col">
             <div className="bl-footer-col-title">Company</div>
-            <a href="#top" className="bl-footer-link">About Us</a>
-            <a href="#top" className="bl-footer-link">Careers</a>
-            <a href="#top" className="bl-footer-link">Blog</a>
-            <a href="#top" className="bl-footer-link">Contact</a>
+            {COMPANY_LINKS.map((l) => <a key={l.label} href={l.href} className="bl-footer-link">{l.label}</a>)}
           </div>
           <div className="bl-footer-col">
             <div className="bl-footer-col-title">Work</div>
-            <a href="#features" className="bl-footer-link">Services</a>
-            <a href="#work" className="bl-footer-link">Portfolio</a>
-            <a href="#industries" className="bl-footer-link">Industries</a>
-            <a href="#pricing" className="bl-footer-link">Pricing</a>
+            {WORK_LINKS.map((l) => <a key={l.label} href={l.href} className="bl-footer-link">{l.label}</a>)}
           </div>
           <div className="bl-footer-col">
             <div className="bl-footer-col-title">Legal</div>
-            <a href="#top" className="bl-footer-link">Privacy Policy</a>
-            <a href="#top" className="bl-footer-link">Terms &amp; Conditions</a>
+            {LEGAL_LINKS.map((l) => <a key={l.label} href={l.href} className="bl-footer-link">{l.label}</a>)}
           </div>
         </div>
         <div className="bl-footer-bottom">

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Taxfolio — Tax Planning Made Simple</title>
+<meta name="description" content="Premium tax consultation template for accountants, CAs, GST consultants and financial advisory firms." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          ink: { DEFAULT:'#12151B', 700:'#1B212A', 800:'#0F131A', 900:'#0A0D12' },
+          teal: { DEFAULT:'#1C4B41', 50:'#EAF1EE', 100:'#D3E3DD', 400:'#4C8577', 500:'#2F6B5D', 600:'#1C4B41', 700:'#123A32' },
+          brass: { DEFAULT:'#A9812E', 50:'#F9F3E7', 100:'#F0E3C4', 300:'#DDBD7C', 400:'#C7A354', 500:'#B08D3D', 600:'#8F6E27' },
+          paper: '#FAFAF9',
+        },
+        fontFamily: {
+          sans: ['Inter','ui-sans-serif','system-ui'],
+          serif: ['Newsreader','ui-serif','Georgia'],
+          mono: ['"IBM Plex Mono"','ui-monospace','SFMono-Regular'],
+        },
+        boxShadow: {
+          'soft': '0 1px 2px rgba(20,24,31,0.04), 0 6px 20px -10px rgba(20,24,31,0.10)',
+          'card': '0 2px 10px -4px rgba(20,24,31,0.10)',
+        },
+        borderRadius: { '2xl':'14px','3xl':'18px' },
+      }
+    }
+  }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-feature-settings: "ss01" on, "cv01" on; }
+  ::selection { background: #1C4B41; color: white; }
+
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s cubic-bezier(.2,.7,.3,1), transform .6s cubic-bezier(.2,.7,.3,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .reveal-stagger > * { opacity:0; transform: translateY(12px); transition: opacity .55s cubic-bezier(.2,.7,.3,1), transform .55s cubic-bezier(.2,.7,.3,1); }
+  .reveal-stagger.in > * { opacity:1; transform: translateY(0); }
+  .reveal-stagger.in > *:nth-child(1){transition-delay:.02s} .reveal-stagger.in > *:nth-child(2){transition-delay:.06s}
+  .reveal-stagger.in > *:nth-child(3){transition-delay:.10s} .reveal-stagger.in > *:nth-child(4){transition-delay:.14s}
+  .reveal-stagger.in > *:nth-child(5){transition-delay:.18s} .reveal-stagger.in > *:nth-child(6){transition-delay:.22s}
+  .reveal-stagger.in > *:nth-child(7){transition-delay:.26s} .reveal-stagger.in > *:nth-child(8){transition-delay:.30s}
+  .reveal-stagger.in > *:nth-child(9){transition-delay:.34s} .reveal-stagger.in > *:nth-child(10){transition-delay:.38s}
+  .reveal-stagger.in > *:nth-child(11){transition-delay:.42s} .reveal-stagger.in > *:nth-child(12){transition-delay:.46s}
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .reveal, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+  }
+
+  .nav-solid { background: rgba(250,250,249,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .dark .nav-solid { background: rgba(11,14,19,0.88); }
+
+  .card-hover { position: relative; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; }
+  .card-hover:hover { transform: translateY(-3px); box-shadow: 0 14px 32px -14px rgba(20,24,31,0.20); border-color: rgba(176,141,61,0.45); }
+  .card-hover::before { content:''; position:absolute; top:-1px; left:16px; right:16px; height:2px; background:#B08D3D; transform:scaleX(0); transition:transform .35s cubic-bezier(.2,.7,.3,1); transform-origin:center; }
+  .card-hover:hover::before { transform:scaleX(1); }
+
+  .emblem { position:relative; }
+  .emblem::after { content:''; position:absolute; inset:-3px; border:1px solid rgba(176,141,61,0.55); border-radius:9999px; }
+
+  .divider-flourish { display:flex; align-items:center; justify-content:center; gap:10px; }
+  .divider-flourish::before, .divider-flourish::after { content:''; width:28px; height:1px; background:rgba(176,141,61,0.5); }
+
+  .btn { transition: background-color .2s ease, border-color .2s ease, color .2s ease, transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(20,24,31,0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(20,24,31,0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 85%);
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black 30%, transparent 85%);
+  }
+  .dark .grid-bg { background-image:
+      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px); }
+
+  .ledger-tick { font-variant-numeric: tabular-nums; }
+
+  .nav-link { position: relative; }
+  .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:1px; background:#1C4B41; transition: width .25s ease; }
+  .nav-link:hover::after { width:100%; }
+
+  .accordion-content { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.2,.7,.3,1); }
+
+  .progress-bar { position: fixed; top:0; left:0; height:2px; background: #1C4B41; width:0%; z-index:60; transition: width .1s linear; }
+
+  .eyebrow { display:inline-flex; align-items:center; gap:8px; font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:#8F6E27; }
+  .dark .eyebrow { color:#DDBD7C; }
+  .eyebrow::before { content:''; width:16px; height:1px; background:#B08D3D; display:inline-block; }
+  .dark .eyebrow::before { background:#DDBD7C; }
+
+  .tag { font-family:'IBM Plex Mono',monospace; }
+
+  input[type=range] { accent-color: #1C4B41; }
+  ::-webkit-scrollbar { width: 9px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #d7d5cf; border-radius: 8px; }
+  .dark ::-webkit-scrollbar-thumb { background: #262b35; }
+  .bg-luxe {
+    background-color: #F8F6F0;
+    background-image:
+      radial-gradient(ellipse 65% 40% at 50% -8%, rgba(176,141,61,0.12), transparent 62%),
+      radial-gradient(ellipse 55% 35% at 100% 15%, rgba(28,75,65,0.06), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 0% 100%, rgba(28,75,65,0.05), transparent 60%);
+    background-attachment: fixed;
+  }
+  .dark .bg-luxe {
+    background-color: #0A0D12;
+    background-image:
+      radial-gradient(ellipse 65% 40% at 50% -8%, rgba(176,141,61,0.09), transparent 62%),
+      radial-gradient(ellipse 55% 35% at 100% 15%, rgba(28,75,65,0.14), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 0% 100%, rgba(28,75,65,0.10), transparent 60%);
+    background-attachment: fixed;
+  }
+</style>
+</head>
+<body class="bg-luxe text-ink-900 dark:text-slate-100 font-sans antialiased">
+
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- COMMAND PALETTE -->
+<div id="cmdOverlay" class="fixed inset-0 z-[100] hidden items-start justify-center pt-28 px-4 bg-ink-900/40 backdrop-blur-sm">
+  <div class="w-full max-w-xl bg-white dark:bg-ink-800 rounded-xl shadow-soft border border-slate-200 dark:border-white/10 overflow-hidden reveal in">
+    <div class="flex items-center gap-3 px-5 py-4 border-b border-slate-100 dark:border-white/10">
+      <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input id="cmdInput" type="text" placeholder="Search services, calculators, pages…" class="w-full bg-transparent outline-none text-sm placeholder:text-slate-400" />
+      <kbd class="text-[10px] text-slate-400 border border-slate-200 dark:border-white/10 rounded px-1.5 py-0.5">ESC</kbd>
+    </div>
+    <div id="cmdResults" class="max-h-80 overflow-y-auto py-2 text-sm"></div>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 border-b border-transparent transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div id="navInner" class="flex items-center justify-between py-4 transition-all duration-300">
+      <a href="#top" class="flex items-center gap-3 font-semibold text-lg tracking-tight">
+        <span class="emblem w-8 h-8 rounded-full bg-ink-900 dark:bg-white grid place-items-center text-white dark:text-ink-900 text-sm font-serif italic">T</span>
+        Taxfolio
+      </a>
+      <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-ink-800/80 dark:text-white/80">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#industries" class="nav-link">Industries</a>
+        <a href="#insights" class="nav-link">Resources</a>
+        <a href="#pricing" class="nav-link">Pricing</a>
+        <a href="#faq" class="nav-link">About</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="cmdBtn" class="hidden md:flex items-center gap-2 text-xs text-slate-500 dark:text-slate-300 border border-slate-200 dark:border-white/10 rounded-md px-2.5 py-1.5 hover:border-teal-400 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          Search <kbd class="border border-slate-300 dark:border-white/20 rounded px-1">⌘K</kbd>
+        </button>
+        <button id="themeToggle" aria-label="Toggle dark mode" class="w-9 h-9 grid place-items-center rounded-md border border-slate-200 dark:border-white/10 hover:border-teal-400 transition">
+          <svg id="iconSun" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.36 6.36l-.7-.7M6.34 6.34l-.7-.7m12.02 0l-.7.7M6.34 17.66l-.7.7M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        </button>
+        <a href="#contact" class="btn hidden sm:inline-flex items-center gap-1.5 bg-ink-900 dark:bg-teal-600 text-white text-sm font-semibold px-4 py-2.5 rounded-md hover:bg-teal-700">
+          Book Consultation
+        </a>
+        <button id="mobileBtn" class="lg:hidden w-9 h-9 grid place-items-center rounded-md border border-slate-200 dark:border-white/10">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
+    </div>
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="lg:hidden mb-3 hidden flex-col gap-1 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800 px-5 py-4 shadow-soft">
+      <a href="#services" class="py-2.5 text-sm font-medium">Services</a>
+      <a href="#industries" class="py-2.5 text-sm font-medium">Industries</a>
+      <a href="#insights" class="py-2.5 text-sm font-medium">Resources</a>
+      <a href="#pricing" class="py-2.5 text-sm font-medium">Pricing</a>
+      <a href="#faq" class="py-2.5 text-sm font-medium">About</a>
+      <a href="#contact" class="py-2.5 text-sm font-medium">Contact</a>
+      <a href="#contact" class="mt-2 text-center bg-ink-900 text-white text-sm font-semibold px-4 py-2.5 rounded-md">Book Consultation</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="relative pt-40 pb-28 overflow-hidden">
+  <div class="absolute inset-0 grid-bg"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-2 gap-16 items-center">
+    <div class="reveal-stagger">
+      <div class="inline-flex items-center gap-2 text-xs font-medium text-ink-700 dark:text-white/80 border border-slate-200 dark:border-white/10 rounded-full px-3 py-1.5">
+        <span class="w-1.5 h-1.5 rounded-full bg-teal-600 animate-pulse"></span>
+        Filing season is open — book a free assessment
+      </div>
+      <h1 class="mt-6 font-serif text-5xl sm:text-6xl font-medium tracking-tight leading-[1.08] text-ink-900 dark:text-white">
+        Tax planning, <span class="italic">made simple</span> —
+        for individuals and businesses.
+      </h1>
+      <div class="mt-6 w-14 h-px bg-brass-500"></div>
+      <p class="mt-6 text-lg text-slate-600 dark:text-slate-300 max-w-xl">
+        A dedicated consultant, transparent pricing, and a secure portal that keeps every filing, refund, and return in one place. No jargon, no surprises.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="#contact" class="btn bg-teal-600 text-white font-semibold px-6 py-3.5 rounded-md shadow-card hover:bg-teal-700">Book Consultation</a>
+        <a href="#calculator" class="btn bg-transparent border border-slate-300 dark:border-white/15 font-semibold px-6 py-3.5 rounded-md hover:border-teal-500">Get Free Tax Assessment</a>
+      </div>
+      <div class="mt-10 flex items-center gap-6 text-sm text-slate-500 dark:text-slate-400">
+        <div class="flex items-center gap-1.5"><svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>256-bit encrypted</div>
+        <div class="flex items-center gap-1.5"><svg class="w-4 h-4 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Certified experts</div>
+      </div>
+    </div>
+
+    <!-- Statement-style dashboard mockup -->
+    <div class="relative reveal p-3">
+      <span class="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-brass-500"></span>
+      <span class="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-brass-500"></span>
+      <span class="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-brass-500"></span>
+      <span class="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-brass-500"></span>
+      <div class="relative rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800 shadow-soft p-6">
+        <div class="flex items-center justify-between mb-5 pb-4 border-b border-slate-100 dark:border-white/10">
+          <span class="tag text-xs font-semibold text-ink-900 dark:text-white">Client Portal</span>
+          <span class="tag text-xs text-slate-400">portal.taxfolio.app</span>
+        </div>
+        <div class="rounded-lg bg-ink-900 text-white p-6">
+          <p class="text-xs text-white/50 tag">Estimated refund</p>
+          <p class="text-3xl font-medium mt-1 ledger-tick font-mono" data-count="184320" data-prefix="₹">₹0</p>
+          <div class="mt-5 h-16 flex items-end gap-1.5">
+            <div class="w-full bg-white/20 rounded-t-sm" style="height:35%"></div>
+            <div class="w-full bg-white/20 rounded-t-sm" style="height:55%"></div>
+            <div class="w-full bg-white/20 rounded-t-sm" style="height:40%"></div>
+            <div class="w-full bg-brass-400 rounded-t-sm" style="height:80%"></div>
+            <div class="w-full bg-white/20 rounded-t-sm" style="height:60%"></div>
+            <div class="w-full bg-white/20 rounded-t-sm" style="height:70%"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-4">
+          <div class="rounded-lg border border-slate-100 dark:border-white/10 p-3">
+            <p class="text-[11px] text-slate-400 tag">GST filed</p>
+            <p class="text-lg font-semibold ledger-tick font-mono" data-count="1240">0</p>
+          </div>
+          <div class="rounded-lg border border-slate-100 dark:border-white/10 p-3">
+            <p class="text-[11px] text-slate-400 tag">Documents</p>
+            <p class="text-lg font-semibold">12/12 <span class="text-teal-600 text-xs">✓</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- stat cards -->
+      <div class="reveal absolute -left-6 top-6 hidden sm:block rounded-lg bg-white dark:bg-ink-800 border border-slate-200 dark:border-white/10 shadow-card px-4 py-3">
+        <p class="text-[11px] text-slate-400 tag">Tax saved</p>
+        <p class="text-base font-semibold text-brass-600 dark:text-brass-400 ledger-tick font-mono" data-count="52400" data-prefix="₹">₹0</p>
+      </div>
+      <div class="reveal absolute -right-6 bottom-10 hidden sm:block rounded-lg bg-white dark:bg-ink-800 border border-slate-200 dark:border-white/10 shadow-card px-4 py-3">
+        <p class="text-[11px] text-slate-400 tag">Clients served</p>
+        <p class="text-base font-semibold text-teal-600 dark:text-teal-400 ledger-tick font-mono" data-count="8600">0</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="border-y border-slate-200 dark:border-white/10 py-10">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal-stagger grid grid-cols-2 sm:grid-cols-4 divide-x divide-slate-200 dark:divide-white/10 text-center">
+      <div>
+        <p class="font-serif text-3xl font-medium text-ink-900 dark:text-white ledger-tick" data-count="18">0</p>
+        <p class="text-xs tracking-wide text-slate-500 mt-1">Years of experience</p>
+      </div>
+      <div>
+        <p class="font-serif text-3xl font-medium text-ink-900 dark:text-white"><span class="ledger-tick" data-count="42000">0</span><span class="text-brass-500">+</span></p>
+        <p class="text-xs tracking-wide text-slate-500 mt-1">Returns filed</p>
+      </div>
+      <div>
+        <p class="font-serif text-3xl font-medium text-ink-900 dark:text-white"><span class="ledger-tick" data-count="3100">0</span><span class="text-brass-500">+</span></p>
+        <p class="text-xs tracking-wide text-slate-500 mt-1">Businesses served</p>
+      </div>
+      <div>
+        <p class="font-serif text-3xl font-medium text-ink-900 dark:text-white">4.9<span class="text-brass-500">★</span></p>
+        <p class="text-xs tracking-wide text-slate-500 mt-1">Average Google rating</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="py-28">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <span class="eyebrow">Services</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Everything a modern filer needs, in one place</h2>
+      <p class="mt-4 text-slate-600 dark:text-slate-300">From a first return to full corporate compliance — pick a service and a certified consultant takes it from there.</p>
+    </div>
+
+    <div class="reveal-stagger mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5" id="servicesGrid"></div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section id="industries" class="py-24 bg-ink-900 text-white relative overflow-hidden border-t border-brass-500/25">
+  <div class="absolute inset-0 grid-bg opacity-60"></div>
+  <div class="relative max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <span class="eyebrow">Industries</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight">Built around how your industry actually files</h2>
+    </div>
+    <div class="reveal-stagger mt-12 grid sm:grid-cols-2 lg:grid-cols-5 gap-4" id="industriesGrid"></div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US — vertical timeline -->
+<section class="py-28">
+  <div class="max-w-5xl mx-auto px-5 lg:px-8">
+    <div class="reveal max-w-2xl mx-auto text-center">
+      <div class="divider-flourish mb-3"><span class="w-1.5 h-1.5 rounded-full bg-brass-500"></span></div>
+      <span class="eyebrow mx-auto">Why Taxfolio</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Reasons clients stay for years, not one season</h2>
+    </div>
+    <div class="mt-16 relative">
+      <div class="absolute left-4 sm:left-1/2 top-0 bottom-0 w-px bg-slate-200 dark:bg-white/10 sm:-translate-x-1/2"></div>
+      <div id="whyList" class="space-y-10"></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="py-24 bg-white dark:bg-white/[0.02] border-y border-slate-200 dark:border-white/10">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal text-center max-w-2xl mx-auto">
+      <div class="divider-flourish mb-3"><span class="w-1.5 h-1.5 rounded-full bg-brass-500"></span></div>
+      <span class="eyebrow mx-auto">How it works</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Five steps from consultation to refund</h2>
+    </div>
+    <div class="reveal-stagger mt-16 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 relative" id="howGrid"></div>
+  </div>
+</section>
+
+<!-- TAX CALCULATOR -->
+<section id="calculator" class="py-28">
+  <div class="max-w-5xl mx-auto px-5 lg:px-8">
+    <div class="reveal text-center max-w-2xl mx-auto">
+      <div class="divider-flourish mb-3"><span class="w-1.5 h-1.5 rounded-full bg-brass-500"></span></div>
+      <span class="eyebrow mx-auto">Free tool</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Estimate your income tax in seconds</h2>
+      <p class="mt-3 text-slate-600 dark:text-slate-300">A quick planning estimate — your consultant will confirm the exact figure with you.</p>
+    </div>
+
+    <div class="reveal mt-14 grid lg:grid-cols-5 gap-6 items-start">
+      <div class="lg:col-span-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800/60 p-8 shadow-soft">
+        <label class="text-sm font-semibold text-ink-900 dark:text-white">Annual income</label>
+        <p class="text-3xl font-medium font-mono mt-2 text-teal-600 dark:text-teal-400" id="incomeVal">₹12,00,000</p>
+        <input id="incomeRange" type="range" min="300000" max="5000000" step="50000" value="1200000" class="w-full mt-4" />
+
+        <label class="text-sm font-semibold text-ink-900 dark:text-white mt-8 block">Deductions (80C, 80D, etc.)</label>
+        <p class="text-2xl font-semibold font-mono mt-2 text-ink-800 dark:text-white" id="dedVal">₹1,50,000</p>
+        <input id="dedRange" type="range" min="0" max="400000" step="10000" value="150000" class="w-full mt-4" />
+
+        <p class="text-xs text-slate-400 mt-6">Estimate only, new tax regime slabs. Not a substitute for a filed return.</p>
+      </div>
+
+      <div class="lg:col-span-2 rounded-xl bg-ink-900 text-white p-8 shadow-soft">
+        <p class="text-xs text-white/50 tag">Estimated tax payable</p>
+        <p class="text-4xl font-medium font-mono mt-2" id="taxOut">₹0</p>
+        <div class="mt-6 pt-6 border-t border-white/10 space-y-3 text-sm">
+          <div class="flex justify-between"><span class="text-white/50">Taxable income</span><span class="font-mono" id="taxableOut">₹0</span></div>
+          <div class="flex justify-between"><span class="text-white/50">Effective rate</span><span class="font-mono" id="rateOut">0%</span></div>
+        </div>
+        <a href="#contact" class="btn mt-7 block text-center bg-brass-500 hover:bg-brass-600 font-semibold py-3 rounded-md">Get exact figures →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-28 bg-ink-900 text-white border-t border-brass-500/25">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal text-center max-w-2xl mx-auto">
+      <div class="divider-flourish mb-3"><span class="w-1.5 h-1.5 rounded-full bg-brass-400"></span></div>
+      <span class="eyebrow mx-auto">Pricing</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight">Transparent, upfront pricing</h2>
+      <div class="mt-7 inline-flex items-center gap-1 bg-white/5 border border-white/10 rounded-md p-1">
+        <button id="toggleMonthly" class="px-4 py-1.5 rounded text-sm font-semibold bg-white text-ink-900">Yearly filing</button>
+        <button id="toggleYearly" class="px-4 py-1.5 rounded text-sm font-semibold text-white/70">Ongoing (monthly)</button>
+      </div>
+    </div>
+    <div class="reveal-stagger mt-14 grid md:grid-cols-3 gap-5" id="pricingGrid"></div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-28">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <span class="eyebrow">Testimonials</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Trusted by founders and families alike</h2>
+    </div>
+    <div class="relative mt-12">
+      <div id="testiTrack" class="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-4 -mx-1 px-1" style="scrollbar-width:none;"></div>
+      <div class="flex justify-center gap-2 mt-6" id="testiDots"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-28 bg-white dark:bg-white/[0.02] border-y border-slate-200 dark:border-white/10">
+  <div class="max-w-3xl mx-auto px-5 lg:px-8">
+    <div class="reveal text-center">
+      <div class="divider-flourish mb-3"><span class="w-1.5 h-1.5 rounded-full bg-brass-500"></span></div>
+      <span class="eyebrow mx-auto">FAQ</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Questions, answered</h2>
+    </div>
+    <div class="reveal mt-12 divide-y divide-slate-200 dark:divide-white/10 border-y border-slate-200 dark:border-white/10" id="faqList"></div>
+  </div>
+</section>
+
+<!-- INSIGHTS -->
+<section id="insights" class="py-28">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="reveal max-w-2xl">
+      <span class="eyebrow">Resources</span>
+      <h2 class="mt-4 font-serif text-4xl font-medium tracking-tight text-ink-900 dark:text-white">Latest insights</h2>
+    </div>
+    <div class="reveal-stagger mt-12 grid md:grid-cols-3 gap-6" id="blogGrid"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-28">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 grid lg:grid-cols-5 gap-6">
+    <div class="reveal lg:col-span-2 rounded-xl bg-ink-900 text-white p-9">
+      <h3 class="text-2xl font-serif font-medium">Talk to a consultant today</h3>
+      <p class="mt-3 text-white/60 text-sm">Free 20-minute assessment. No commitment.</p>
+      <div class="mt-8 space-y-5 text-sm">
+        <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M3 5.5A1.5 1.5 0 014.5 4h3.086a1 1 0 01.948.684l1.235 3.703a1 1 0 01-.25 1.02L8 10.914a12 12 0 006 6l1.507-1.52a1 1 0 011.02-.25l3.703 1.235a1 1 0 01.684.949V20.5a1.5 1.5 0 01-1.5 1.5H18C9.716 22 3 15.284 3 7V5.5z"/></svg></span> +91 98765 43210</div>
+        <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M3 6.75A1.75 1.75 0 014.75 5h14.5A1.75 1.75 0 0121 6.75v10.5A1.75 1.75 0 0119.25 19H4.75A1.75 1.75 0 013 17.25V6.75z M3.5 6.5l8.5 6 8.5-6"/></svg></span> hello@taxfolio.app</div>
+        <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M20 12a8 8 0 10-14.6 4.53L4 21l4.6-1.34A8 8 0 0020 12z"/></svg></span> WhatsApp us</div>
+        <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z M12 11.5a2.25 2.25 0 100-4.5 2.25 2.25 0 000 4.5z"/></svg></span> HSR Layout, Bengaluru</div>
+        <div class="flex items-center gap-3"><span class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M12 7v5l3.5 2M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></span> Mon–Sat, 9am–7pm</div>
+      </div>
+    </div>
+    <form class="reveal lg:col-span-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800/60 p-9 shadow-soft" onsubmit="event.preventDefault(); this.reset(); document.getElementById('formOk').classList.remove('hidden');">
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div><label class="text-xs font-semibold text-slate-500">Name</label><input required class="mt-1.5 w-full rounded-md border border-slate-200 dark:border-white/10 bg-transparent px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-teal-400"/></div>
+        <div><label class="text-xs font-semibold text-slate-500">Company (optional)</label><input class="mt-1.5 w-full rounded-md border border-slate-200 dark:border-white/10 bg-transparent px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-teal-400"/></div>
+        <div><label class="text-xs font-semibold text-slate-500">Email</label><input required type="email" class="mt-1.5 w-full rounded-md border border-slate-200 dark:border-white/10 bg-transparent px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-teal-400"/></div>
+        <div><label class="text-xs font-semibold text-slate-500">Phone</label><input required class="mt-1.5 w-full rounded-md border border-slate-200 dark:border-white/10 bg-transparent px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-teal-400"/></div>
+        <div class="sm:col-span-2"><label class="text-xs font-semibold text-slate-500">Service needed</label>
+          <select class="mt-1.5 w-full rounded-md border border-slate-200 dark:border-white/10 bg-transparent px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-teal-400">
+            <option>Income Tax Filing</option><option>GST Registration</option><option>Corporate Tax</option><option>Business Registration</option><option>Other</option>
+          </select>
+        </div>
+        <div class="sm:col-span-2"><label class="text-xs font-semibold text-slate-500">Message</label><textarea rows="3" class="mt-1.5 w-full rounded-md border border-slate-200 dark:border-white/10 bg-transparent px-3.5 py-2.5 text-sm outline-none focus:ring-2 focus:ring-teal-400"></textarea></div>
+      </div>
+      <button class="btn mt-6 w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white font-semibold px-6 py-3 rounded-md">Book Consultation</button>
+      <p id="formOk" class="hidden mt-3 text-sm text-teal-600 dark:text-teal-400">Thanks — a consultant will reach out within one business day.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-ink-900 text-white/60 pt-20 pb-8 border-t border-brass-500/25">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-10">
+      <div class="lg:col-span-2">
+        <a href="#top" class="flex items-center gap-3 font-semibold text-lg text-white">
+          <span class="emblem w-8 h-8 rounded-full bg-white grid place-items-center text-ink-900 text-sm font-serif italic">T</span> Taxfolio
+        </a>
+        <p class="mt-4 text-sm max-w-xs">Tax planning and compliance for individuals and businesses — filed right, explained clearly.</p>
+        <div class="mt-6 flex gap-3">
+          <a href="#" class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center hover:border-white/25 text-xs font-mono">in</a>
+          <a href="#" class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center hover:border-white/25 text-xs font-mono">𝕏</a>
+          <a href="#" class="w-9 h-9 rounded-md bg-white/5 border border-white/10 grid place-items-center hover:border-white/25 text-xs font-mono">ig</a>
+        </div>
+      </div>
+      <div>
+        <p class="text-white text-sm font-semibold">Navigation</p>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li><a href="#services">Services</a></li><li><a href="#industries">Industries</a></li><li><a href="#pricing">Pricing</a></li><li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white text-sm font-semibold">Services</p>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          <li>Income Tax Filing</li><li>GST Returns</li><li>Corporate Tax</li><li>Startup Advisory</li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-white text-sm font-semibold">Newsletter</p>
+        <p class="mt-4 text-sm">Monthly tax updates, no spam.</p>
+        <form class="mt-3 flex gap-2" onsubmit="event.preventDefault()">
+          <input placeholder="you@email.com" class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-sm outline-none"/>
+          <button class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold px-3.5 rounded-md">Join</button>
+        </form>
+      </div>
+    </div>
+    <div class="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-between text-xs text-white/40">
+      <p>© 2026 Taxfolio. All rights reserved.</p>
+      <div class="flex gap-5"><a href="#">Privacy</a><a href="#">Terms</a></div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating utility buttons -->
+<a href="#" class="btn fixed bottom-6 left-6 z-40 w-12 h-12 rounded-full bg-teal-600 hover:bg-teal-700 grid place-items-center text-white shadow-card" aria-label="WhatsApp">
+  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" d="M20 12a8 8 0 10-14.6 4.53L4 21l4.6-1.34A8 8 0 0020 12z"/></svg>
+</a>
+<button id="backToTop" class="btn fixed bottom-6 right-6 z-40 w-12 h-12 rounded-full bg-ink-900 dark:bg-teal-600 text-white grid place-items-center shadow-card opacity-0 pointer-events-none transition-opacity" aria-label="Back to top">↑</button>
+
+<script>
+/* ---------- Data (CMS-ready objects) ---------- */
+const services = [
+  {icon:'IT', title:'Income Tax Filing', desc:'Accurate, on-time ITR filing for salaried, self-employed and NRI clients.'},
+  {icon:'CT', title:'Corporate Tax', desc:'Full-scope tax strategy and compliance for private and public companies.'},
+  {icon:'GR', title:'GST Registration', desc:'End-to-end GST registration handled in days, not weeks.'},
+  {icon:'GS', title:'GST Returns', desc:'Monthly and quarterly returns filed with zero missed deadlines.'},
+  {icon:'TP', title:'Tax Planning', desc:'Forward-looking strategies to legally minimise your liability.'},
+  {icon:'BR', title:'Business Registration', desc:'Company, LLP and proprietorship setup with full documentation.'},
+  {icon:'PT', title:'Payroll Tax', desc:'PF, ESI and TDS on salaries managed monthly, without the manual work.'},
+  {icon:'SA', title:'Startup Advisory', desc:'Cap tables, ESOPs and funding-round tax structuring for founders.'},
+  {icon:'TD', title:'TDS Filing', desc:'Quarterly TDS returns and correction statements, filed correctly.'},
+  {icon:'AA', title:'Audit Assistance', desc:'Statutory and tax audit support with a consultant by your side.'},
+  {icon:'NR', title:'NRI Taxation', desc:'DTAA, repatriation and cross-border filing for NRIs and OCIs.'},
+  {icon:'FC', title:'Financial Consultation', desc:'One-on-one planning sessions for major financial decisions.'},
+];
+
+const industries = [
+  {icon:'HC', name:'Healthcare'}, {icon:'RT', name:'Retail'}, {icon:'MF', name:'Manufacturing'},
+  {icon:'SU', name:'Startups'}, {icon:'RE', name:'Real Estate'}, {icon:'HP', name:'Hospitality'},
+  {icon:'IT', name:'IT Companies'}, {icon:'EC', name:'E-Commerce'}, {icon:'CN', name:'Construction'}, {icon:'FL', name:'Freelancers'},
+];
+
+const whyUs = [
+  {title:'Certified experts', desc:'Every case is reviewed by a Chartered Accountant, not a script.'},
+  {title:'100% secure', desc:'Bank-grade encryption on every document you upload.'},
+  {title:'Transparent pricing', desc:'One quote upfront — no add-on fees mid-filing.'},
+  {title:'Fast turnaround', desc:'Most individual returns filed within 72 hours of documents received.'},
+  {title:'Dedicated consultant', desc:'One point of contact for the life of your account.'},
+  {title:'Compliance guaranteed', desc:'We stand behind every filing, in writing.'},
+];
+
+const steps = [
+  {n:'01', title:'Book Consultation'}, {n:'02', title:'Upload Documents'}, {n:'03', title:'Tax Review'}, {n:'04', title:'File Returns'}, {n:'05', title:'Receive Reports'},
+];
+
+const pricingPlans = {
+  yearly: [
+    {name:'Individual', price:'₹2,499', desc:'For salaried individuals & freelancers', features:['1 ITR filing','Email support','Basic tax planning'], cta:'Get started'},
+    {name:'Business', price:'₹14,999', desc:'For proprietorships & small businesses', features:['GST + ITR filing','Dedicated consultant','Quarterly tax planning','Priority support'], cta:'Get started', highlight:true},
+    {name:'Enterprise', price:'Custom', desc:'For companies & large teams', features:['Full compliance suite','Payroll + TDS management','Audit assistance','Dedicated account manager'], cta:'Talk to sales'},
+  ],
+  monthly: [
+    {name:'Individual', price:'₹499/mo', desc:'Ongoing personal tax support', features:['Monthly check-ins','Email support','Document vault'], cta:'Get started'},
+    {name:'Business', price:'₹2,999/mo', desc:'Ongoing GST & compliance', features:['Monthly GST filing','Dedicated consultant','Payroll support','Priority support'], cta:'Get started', highlight:true},
+    {name:'Enterprise', price:'Custom', desc:'Ongoing enterprise compliance', features:['Full compliance suite','Payroll + TDS management','Audit assistance','Dedicated account manager'], cta:'Talk to sales'},
+  ]
+};
+
+const testimonials = [
+  {name:'Ananya Rao', role:'Founder, Loomstack', quote:'They caught a GST filing error our old accountant missed for two years. Worth every rupee.', rating:5},
+  {name:'Vikram Shah', role:'Freelance designer', quote:'First time filing taxes has ever felt calm instead of stressful.', rating:5},
+  {name:'Priya Menon', role:'Director, Menon Retail', quote:'One dedicated consultant who actually answers the phone. Rare in this industry.', rating:5},
+  {name:'Rahul Iyer', role:'NRI, Dubai', quote:'DTAA filing that used to take weeks now takes days, with zero back-and-forth.', rating:4},
+];
+
+const faqs = [
+  {q:'How long does a typical filing take?', a:'Most individual returns are completed within 72 hours of receiving your documents. Business filings vary by complexity, typically 5–10 business days.'},
+  {q:'Is my financial data secure?', a:'Yes — all documents are encrypted in transit and at rest, and access is limited to your assigned consultant and compliance team.'},
+  {q:'Can I switch plans later?', a:'Absolutely. You can upgrade or downgrade your plan at any time from your client portal, with prorated billing.'},
+  {q:'Do you handle NRI and cross-border taxation?', a:'Yes, including DTAA claims, repatriation planning, and multi-jurisdiction filings.'},
+  {q:'What if I miss a deadline?', a:'Your dedicated consultant tracks every deadline on your behalf and notifies you well in advance — missed deadlines are extremely rare.'},
+];
+
+const blogs = [
+  {tag:'Budget 2026', title:'What the new budget means for salaried taxpayers', read:'5 min read'},
+  {tag:'GST', title:'A founder\'s guide to GST registration timelines', read:'4 min read'},
+  {tag:'Guide', title:'HRA vs home loan: which deduction wins in 2026', read:'6 min read'},
+];
+
+/* ---------- Renderers ---------- */
+const el = (tag, cls, html) => { const e = document.createElement(tag); if(cls) e.className = cls; if(html!==undefined) e.innerHTML = html; return e; };
+
+const servicesGrid = document.getElementById('servicesGrid');
+services.forEach(s => {
+  const card = el('div', 'card-hover group rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800/50 p-6', `
+    <div class="w-10 h-10 rounded-md border border-slate-200 dark:border-white/10 grid place-items-center text-xs font-semibold tag text-teal-700 dark:text-teal-400">${s.icon}</div>
+    <h3 class="mt-4 font-semibold text-ink-900 dark:text-white">${s.title}</h3>
+    <p class="mt-2 text-sm text-slate-500 dark:text-slate-400">${s.desc}</p>
+    <a href="#contact" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-teal-600 dark:text-teal-400 group-hover:gap-2 transition-all">Learn more →</a>
+  `);
+  servicesGrid.appendChild(card);
+});
+
+const industriesGrid = document.getElementById('industriesGrid');
+industries.forEach(i => {
+  industriesGrid.appendChild(el('div', 'card-hover rounded-xl border border-white/10 bg-white/5 p-5 text-center', `
+    <div class="mx-auto w-9 h-9 rounded-md border border-white/15 grid place-items-center text-xs font-semibold tag">${i.icon}</div>
+    <p class="mt-3 text-sm font-medium">${i.name}</p>
+  `));
+});
+
+const whyList = document.getElementById('whyList');
+whyUs.forEach((w, i) => {
+  const side = i % 2 === 0;
+  whyList.appendChild(el('div', `reveal relative sm:w-1/2 ${side ? 'sm:pr-10 sm:text-right sm:ml-0' : 'sm:pl-10 sm:ml-auto'} pl-12 sm:pl-10`, `
+    <div class="absolute ${side ? 'sm:right-[-6px]' : 'sm:left-[-6px]'} left-[10px] top-1 w-3 h-3 rounded-full bg-teal-600 ring-4 ring-teal-100 dark:ring-teal-500/20"></div>
+    <h4 class="font-semibold text-ink-900 dark:text-white">${w.title}</h4>
+    <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">${w.desc}</p>
+  `));
+});
+
+const howGrid = document.getElementById('howGrid');
+steps.forEach((s, i) => {
+  howGrid.appendChild(el('div', 'relative text-center', `
+    <div class="mx-auto w-14 h-14 rounded-full bg-white dark:bg-ink-800 border border-brass-500/50 shadow-soft grid place-items-center font-serif italic text-lg text-brass-600 dark:text-brass-300">${s.n}</div>
+    <p class="mt-3 text-sm font-semibold text-ink-900 dark:text-white">${s.title}</p>
+    ${i < steps.length - 1 ? '<div class="hidden lg:block absolute top-7 left-[60%] w-full h-px bg-slate-200 dark:bg-white/10"></div>' : ''}
+  `));
+});
+
+function renderPricing(mode) {
+  const grid = document.getElementById('pricingGrid');
+  grid.innerHTML = '';
+  pricingPlans[mode].forEach(p => {
+    grid.appendChild(el('div', `card-hover relative rounded-xl p-8 ${p.highlight ? 'bg-white text-ink-900 border-2 border-brass-500' : 'bg-white/5 border border-white/10'}`, `
+      ${p.highlight ? '<span class="tag absolute -top-3 left-8 bg-brass-500 text-ink-900 text-[10px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full">Most chosen</span>' : ''}
+      <p class="text-sm font-semibold ${p.highlight?'text-teal-700':'text-white/70'}">${p.name}</p>
+      <p class="mt-3 text-3xl font-medium font-mono">${p.price}</p>
+      <p class="mt-1 text-sm ${p.highlight?'text-slate-500':'text-white/60'}">${p.desc}</p>
+      <ul class="mt-6 space-y-2.5 text-sm">
+        ${p.features.map(f=>`<li class="flex items-center gap-2"><span class="${p.highlight?'text-teal-600':'text-brass-400'}">✓</span> ${f}</li>`).join('')}
+      </ul>
+      <a href="#contact" class="btn mt-7 block text-center font-semibold py-2.5 rounded-md ${p.highlight ? 'bg-ink-900 text-white' : 'bg-white/10 text-white'}">${p.cta}</a>
+    `));
+  });
+}
+renderPricing('yearly');
+document.getElementById('toggleMonthly').onclick = function(){ renderPricing('yearly'); this.className='px-4 py-1.5 rounded text-sm font-semibold bg-white text-ink-900'; document.getElementById('toggleYearly').className='px-4 py-1.5 rounded text-sm font-semibold text-white/70'; };
+document.getElementById('toggleYearly').onclick = function(){ renderPricing('monthly'); this.className='px-4 py-1.5 rounded text-sm font-semibold bg-white text-ink-900'; document.getElementById('toggleMonthly').className='px-4 py-1.5 rounded text-sm font-semibold text-white/70'; };
+
+const testiTrack = document.getElementById('testiTrack');
+testimonials.forEach(t => {
+  testiTrack.appendChild(el('div', 'snap-start shrink-0 w-[85%] sm:w-[420px] rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800/50 p-8', `
+    <div class="text-brass-500 font-serif italic text-4xl leading-none">"</div>
+    <div class="text-brass-500 text-sm mt-2">${'★'.repeat(t.rating)}${'☆'.repeat(5-t.rating)}</div>
+    <p class="mt-3 font-serif text-lg text-ink-800 dark:text-slate-200 leading-relaxed">${t.quote}</p>
+    <div class="mt-6 flex items-center gap-3 pt-4 border-t border-slate-100 dark:border-white/10">
+      <div class="emblem w-9 h-9 rounded-full border border-slate-200 dark:border-white/10 grid place-items-center text-xs font-semibold tag text-teal-700 dark:text-teal-400">${t.name.split(' ').map(n=>n[0]).join('')}</div>
+      <div><p class="text-sm font-semibold text-ink-900 dark:text-white">${t.name}</p><p class="text-xs text-slate-400">${t.role}</p></div>
+    </div>
+  `));
+});
+
+const faqList = document.getElementById('faqList');
+faqs.forEach((f, i) => {
+  const wrap = el('div', 'py-2');
+  wrap.innerHTML = `
+    <button class="faq-btn w-full flex items-center justify-between py-4 text-left">
+      <span class="font-semibold text-ink-900 dark:text-white pr-6">${f.q}</span>
+      <span class="faq-icon shrink-0 w-7 h-7 rounded-full border border-slate-200 dark:border-white/10 grid place-items-center transition-transform text-sm">+</span>
+    </button>
+    <div class="accordion-content"><p class="pb-5 text-sm text-slate-500 dark:text-slate-400">${f.a}</p></div>
+  `;
+  faqList.appendChild(wrap);
+  const btn = wrap.querySelector('.faq-btn');
+  const content = wrap.querySelector('.accordion-content');
+  const icon = wrap.querySelector('.faq-icon');
+  btn.addEventListener('click', () => {
+    const open = content.style.maxHeight;
+    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+    document.querySelectorAll('.faq-icon').forEach(ic => ic.style.transform = 'rotate(0deg)');
+    if (!open) { content.style.maxHeight = content.scrollHeight + 'px'; icon.style.transform = 'rotate(45deg)'; }
+  });
+});
+
+const blogGrid = document.getElementById('blogGrid');
+blogs.forEach(b => {
+  blogGrid.appendChild(el('div', 'card-hover rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-ink-800/50 overflow-hidden', `
+    <div class="h-32 bg-slate-50 dark:bg-white/[0.03] border-b border-slate-100 dark:border-white/10 grid place-items-center">
+      <span class="tag text-xs text-slate-300 dark:text-white/20">Taxfolio Insights</span>
+    </div>
+    <div class="p-6">
+      <p class="text-xs font-semibold text-teal-600 dark:text-teal-400 tag">${b.tag}</p>
+      <h3 class="mt-2 font-semibold text-ink-900 dark:text-white leading-snug">${b.title}</h3>
+      <p class="mt-3 text-xs text-slate-400">${b.read}</p>
+    </div>
+  `));
+});
+
+/* ---------- Interactions ---------- */
+// scroll reveal
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal, .reveal-stagger').forEach(elx => io.observe(elx));
+
+// counters
+function animateCount(node) {
+  const target = parseInt(node.dataset.count, 10);
+  const prefix = node.dataset.prefix || '';
+  const dur = 1600; const start = performance.now();
+  function tick(now) {
+    const p = Math.min(1, (now - start) / dur);
+    const eased = 1 - Math.pow(1 - p, 3);
+    node.textContent = prefix + Math.floor(eased * target).toLocaleString('en-IN');
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const counterIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { animateCount(e.target); counterIO.unobserve(e.target); } });
+}, { threshold: 0.4 });
+document.querySelectorAll('.ledger-tick').forEach(n => counterIO.observe(n));
+
+// navbar on scroll + progress bar
+const navInner = document.getElementById('navInner');
+const navbar = document.getElementById('navbar');
+const progressBar = document.getElementById('progressBar');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  navbar.className = 'fixed top-0 inset-x-0 z-50 transition-all duration-300 ' + (y > 30 ? 'nav-solid border-b border-slate-200 dark:border-white/10 shadow-soft' : 'border-b border-transparent');
+  const h = document.documentElement;
+  const pct = (y / (h.scrollHeight - h.clientHeight)) * 100;
+  progressBar.style.width = pct + '%';
+  document.getElementById('backToTop').style.opacity = y > 600 ? '1' : '0';
+  document.getElementById('backToTop').style.pointerEvents = y > 600 ? 'auto' : 'none';
+});
+document.getElementById('backToTop').onclick = () => window.scrollTo({top:0, behavior:'smooth'});
+
+// mobile menu
+const mobileBtn = document.getElementById('mobileBtn');
+const mobileMenu = document.getElementById('mobileMenu');
+mobileBtn.onclick = () => mobileMenu.classList.toggle('hidden');
+
+// dark mode
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.onclick = () => {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('taxfolio-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+};
+if (localStorage.getItem('taxfolio-theme') === 'dark') document.documentElement.classList.add('dark');
+
+// command palette
+const cmdOverlay = document.getElementById('cmdOverlay');
+const cmdInput = document.getElementById('cmdInput');
+const cmdResults = document.getElementById('cmdResults');
+const cmdIndex = [
+  {label:'Income Tax Filing', href:'#services'}, {label:'GST Registration', href:'#services'},
+  {label:'Tax Calculator', href:'#calculator'}, {label:'Pricing', href:'#pricing'},
+  {label:'Book Consultation', href:'#contact'}, {label:'FAQ', href:'#faq'}, {label:'Industries', href:'#industries'},
+];
+function renderCmd(q) {
+  const items = cmdIndex.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
+  cmdResults.innerHTML = items.map(i => `<a href="${i.href}" class="block px-5 py-2.5 hover:bg-slate-50 dark:hover:bg-white/5">${i.label}</a>`).join('') || '<p class="px-5 py-4 text-slate-400">No results</p>';
+  cmdResults.querySelectorAll('a').forEach(a => a.addEventListener('click', closeCmd));
+}
+function openCmd(){ cmdOverlay.classList.remove('hidden'); cmdOverlay.classList.add('flex'); cmdInput.value=''; renderCmd(''); cmdInput.focus(); }
+function closeCmd(){ cmdOverlay.classList.add('hidden'); cmdOverlay.classList.remove('flex'); }
+document.getElementById('cmdBtn').onclick = openCmd;
+cmdOverlay.addEventListener('click', (e) => { if (e.target === cmdOverlay) closeCmd(); });
+cmdInput.addEventListener('input', () => renderCmd(cmdInput.value));
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); openCmd(); }
+  if (e.key === 'Escape') closeCmd();
+});
+renderCmd('');
+
+// tax calculator
+const incomeRange = document.getElementById('incomeRange');
+const dedRange = document.getElementById('dedRange');
+function fmtINR(n){ return '₹' + Math.round(n).toLocaleString('en-IN'); }
+function calcTax() {
+  const income = parseInt(incomeRange.value, 10);
+  const ded = parseInt(dedRange.value, 10);
+  document.getElementById('incomeVal').textContent = fmtINR(income);
+  document.getElementById('dedVal').textContent = fmtINR(ded);
+  const taxable = Math.max(0, income - ded);
+  // simplified illustrative slabs
+  let tax = 0, remaining = taxable;
+  const slabs = [[300000,0],[300000,0.05],[300000,0.10],[300000,0.15],[300000,0.20],[Infinity,0.30]];
+  for (const [band, rate] of slabs) {
+    const amt = Math.min(remaining, band);
+    tax += amt * rate;
+    remaining -= amt;
+    if (remaining <= 0) break;
+  }
+  document.getElementById('taxOut').textContent = fmtINR(tax);
+  document.getElementById('taxableOut').textContent = fmtINR(taxable);
+  document.getElementById('rateOut').textContent = (taxable ? (tax/taxable*100).toFixed(1) : '0') + '%';
+}
+incomeRange.addEventListener('input', calcTax);
+dedRange.addEventListener('input', calcTax);
+calcTax();
+</script>
+</body>
+</html>
