@@ -107,7 +107,7 @@ function WorkPreview({ src, title }: { src: string; title: string }) {
   );
 }
 
-const INDUSTRIES = [
+const INDUSTRIES: { name: string; icon: string; offset?: boolean }[] = [
   { name: 'Healthcare', icon: 'M12 6v12M6 12h12M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z' },
   { name: 'Manufacturing', icon: 'M2 20h20M4 20V10l5 3V10l5 3V7l6-3v16' },
   { name: 'Education', icon: 'M22 10L12 5 2 10l10 5 10-5zM6 12v5c0 1 3 3 6 3s6-2 6-3v-5' },
@@ -115,7 +115,7 @@ const INDUSTRIES = [
   { name: 'Hospitality', icon: 'M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6' },
   { name: 'Travel', icon: 'M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z' },
   { name: 'Legal', icon: 'M12 3v18M8 21h8M6 7l-4 7a4 4 0 0 0 8 0L6 7zM18 7l-4 7a4 4 0 0 0 8 0l-4-7zM4 7h16' },
-  { name: 'Construction', icon: 'M2 20h20M6 20V9l6-5 6 5v11M10 20v-4h4v4' },
+  { name: 'Construction', icon: 'M2 20h20M6 20V9l6-5 6 5v11M10 20v-4h4v4', offset: true },
   { name: 'Real Estate', icon: 'M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16' },
   { name: 'IT', icon: 'M4 17l6-5-6-5M12 19h8' },
   { name: 'Retail', icon: 'M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4H6zM3 6h18M16 10a4 4 0 0 1-8 0' },
@@ -406,7 +406,7 @@ export function Landing() {
         </div>
         <div className="bl-grid-ind">
           {INDUSTRIES.map((ind) => (
-            <div key={ind.name} className="bl-ind-card" onMouseMove={cardMove} onMouseLeave={cardLeave}>
+            <div key={ind.name} className={`bl-ind-card${ind.offset ? ' bl-ind-offset' : ''}`} onMouseMove={cardMove} onMouseLeave={cardLeave}>
               <div className="bl-glow bl-glow--ind" />
               <div className="bl-border bl-border--ind" />
               <div className="bl-ind-icon">

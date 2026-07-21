@@ -372,7 +372,8 @@
 
 /* ---------- Industries ---------- */
 .bl-industries { max-width: 1280px; margin: 0 auto; padding: 64px 28px 40px; }
-.bl-grid-ind { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+.bl-grid-ind { display: grid; grid-template-columns: repeat(7, 1fr); gap: 16px; }
+.bl-ind-offset { grid-column-start: 2; }
 .bl-ind-card {
   --mx: 50%; --my: 50%; --go: 0;
   position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; gap: 12px;
@@ -439,6 +440,10 @@
 .bl-theme-toggle:active { transform: scale(0.95); }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .bl-grid-ind { grid-template-columns: repeat(4, 1fr); }
+  .bl-ind-offset { grid-column-start: auto; }
+}
 @media (max-width: 860px) {
   .bl-nav-links { display: none; }
   .bl-footer-top { grid-template-columns: 1fr 1fr; }
@@ -446,4 +451,5 @@
 }
 @media (max-width: 520px) {
   .bl-footer-top { grid-template-columns: 1fr; }
+  .bl-grid-ind { grid-template-columns: repeat(2, 1fr); }
 }
