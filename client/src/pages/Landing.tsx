@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, MouseEvent as ReactMouseEvent, CSSProperties } from 'react';
 import { Link } from 'react-router-dom';
 import { registerDitherShader } from '../lib/ditherShader';
-import { initCursor, initPreloader } from '../lib/pageFx';
+import { initCursor, initPreloader, initScrollStack } from '../lib/pageFx';
+import { applyLandingSeo, LANDING_FAQ } from '../lib/seo';
 import './Landing.css';
 
 // Allow the <dither-shader> custom element in JSX (declared once, project-wide).
@@ -168,7 +169,10 @@ export function Landing() {
     registerDitherShader();
     const root = rootRef.current ?? document.body;
     initPreloader(root);
-    return initCursor(root);
+    const teardownCursor = initCursor(root);
+    const teardownStack = initScrollStack();
+    const teardownSeo = applyLandingSeo();
+    return () => { teardownCursor(); teardownStack(); teardownSeo(); };
   }, []);
 
   const toggleTheme = () => {
@@ -195,7 +199,7 @@ export function Landing() {
       <div className="bl-nav-spacer" />
 
       {/* Nav */}
-      <nav className="bl-nav">
+      <nav className="bl-nav" aria-label="Primary">
         <a href="#top" className="bl-nav-logo">BlackQuill<span className="bl-dot">.</span></a>
         <div className="bl-nav-links">
           {NAV_ITEMS.map((n) => {
@@ -221,6 +225,7 @@ export function Landing() {
         <Link to="/signin" className="bl-nav-cta">Get started</Link>
       </nav>
 
+      <main>
       {/* Hero */}
       <section className="bl-hero">
         <div className="bl-shader-host" data-shader-host="true">
@@ -294,6 +299,7 @@ export function Landing() {
             <div
               key={s.num}
               className="bl-step"
+              data-stack-card={s.num}
               style={{ top: `${96 + i * 30}px` }}
               onMouseMove={cardMove}
               onMouseLeave={cardLeave}
@@ -420,6 +426,22 @@ export function Landing() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section id="faq" className="bl-faq">
+        <div className="bl-head-center">
+          <span className="bl-eyebrow">FAQ</span>
+          <h2 className="bl-h2">Questions, answered.</h2>
+        </div>
+        <div className="bl-faq-list">
+          {LANDING_FAQ.map((f) => (
+            <details key={f.q} className="bl-faq-item" name="bl-faq">
+              <summary className="bl-faq-q">{f.q}</summary>
+              <p className="bl-faq-a">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       {/* CTA */}
       <section id="cta" className="bl-cta">
         <div className="bl-shader-host" data-shader-host="true">
@@ -450,6 +472,7 @@ export function Landing() {
           ))}
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="bl-footer">

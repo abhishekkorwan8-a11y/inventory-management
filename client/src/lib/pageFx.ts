@@ -10,17 +10,24 @@ export function initCursor(root: HTMLElement = document.body): () => void {
   const dot = document.createElement('div');
   dot.id = 'bq-cursor-dot';
   dot.style.cssText =
-    'position:fixed;top:0;left:0;width:6px;height:6px;border-radius:50%;background:var(--accent,#EC4E02);' +
+    'position:fixed;top:0;left:0;width:9px;height:9px;border-radius:50%;background:var(--accent,#EC4E02);' +
+    'box-shadow:0 0 8px color-mix(in srgb, var(--accent,#EC4E02) 70%, transparent);' +
     'pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0';
 
   const ring = document.createElement('div');
   ring.id = 'bq-cursor-ring';
   ring.style.cssText =
-    'position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1px solid var(--line-strong);' +
+    'position:fixed;top:0;left:0;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--accent,#EC4E02);' +
     'pointer-events:none;z-index:9999;transform:translate(-50%,-50%);opacity:0;' +
     'transition:width .25s ease, height .25s ease, border-color .25s ease, background .25s ease';
 
   root.append(ring, dot);
+
+  // Hide the native cursor while the custom one is active.
+  const hide = document.createElement('style');
+  hide.id = 'bq-cursor-hide';
+  hide.textContent = 'html, body, a, button, input, select, textarea, label, * { cursor: none !important; }';
+  document.head.appendChild(hide);
 
   let mx = 0, my = 0, rx = 0, ry = 0, seen = false, raf = 0;
   const onMove = (e: MouseEvent) => {
@@ -52,7 +59,7 @@ export function initCursor(root: HTMLElement = document.body): () => void {
     if (t.closest && t.closest(HOVER) && !(rel && rel.closest && rel.closest(HOVER))) {
       ring.style.width = '34px'; ring.style.height = '34px';
       ring.style.background = 'transparent';
-      ring.style.borderColor = 'var(--line-strong)';
+      ring.style.borderColor = 'var(--accent,#EC4E02)';
     }
   };
   document.addEventListener('mouseover', onOver);
@@ -63,7 +70,40 @@ export function initCursor(root: HTMLElement = document.body): () => void {
     document.removeEventListener('mouseover', onOver);
     document.removeEventListener('mouseout', onOut);
     cancelAnimationFrame(raf);
-    dot.remove(); ring.remove();
+    dot.remove(); ring.remove(); hide.remove();
+  };
+}
+
+// ScrollStack: sticky "how it works" cards get scale + blur as later cards
+// stack on top of them. Returns a teardown that removes listeners.
+export function initScrollStack(): () => void {
+  let raf = 0;
+  const update = () => {
+    raf = 0;
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[data-stack-card]'));
+    if (!els.length) return;
+    const progress = els.map((el) => {
+      const top = parseFloat(getComputedStyle(el).top) || 96;
+      const d = el.getBoundingClientRect().top - top;
+      return Math.max(0, Math.min(1, 1 - d / 320));
+    });
+    els.forEach((el, i) => {
+      let depth = 0;
+      for (let j = i + 1; j < els.length; j++) depth += progress[j];
+      const scale = Math.max(0.85, 1 - depth * 0.04);
+      const blur = depth > 0.05 ? Math.min(4, depth * 1.1) : 0;
+      el.style.setProperty('--stack-scale', String(Math.round(scale * 1000) / 1000));
+      el.style.setProperty('--stack-blur', Math.round(blur * 100) / 100 + 'px');
+    });
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+  return () => {
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('resize', onScroll);
+    cancelAnimationFrame(raf);
   };
 }
 
