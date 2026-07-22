@@ -59,7 +59,7 @@ const SOCIAL_LINKS = {
   linkedin: 'https://linkedin.com/company/your-company', // TODO: replace with real LinkedIn
   instagram: 'https://www.instagram.com/blackquill.in',
   github: 'https://github.com/abhishekkorwan8-a11y',
-  whatsapp: 'https://wa.me/', // TODO: append your number, e.g. https://wa.me/15551234567
+  whatsapp: 'https://wa.me/918105160830', // temporary personal number (+91); swap for a business number
   facebook: 'https://www.facebook.com/profile.php?id=61592221862115',
 };
 const COMPANY_LINKS = [
