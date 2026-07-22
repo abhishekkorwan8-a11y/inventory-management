@@ -24,13 +24,17 @@ const SHADER_SPEED = 0.4;
 const DITHER_PIXEL = 2;
 
 const WHATSAPP_NUMBER = '918105160830';
-// Consultation CTAs ("Book Free Consultation", "Let's Build Together", nav "Get started").
-// Routed to WhatsApp so they work at launch — swap this one line for a
-// Calendly/cal.com URL once you have a scheduler.
-const BOOKING_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi BlackQuill, I'd like to book a free consultation.")}`;
-// Pricing "Get started" opens a WhatsApp chat prefilled with the chosen plan.
-const planEnquiry = (plan: string) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi BlackQuill, I'm interested in the ${plan} plan.`)}`;
+const EMAIL = 'abhishek@blackquill.in';
+const waLink = (msg: string) => `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+const mailLink = (msg: string, subj: string) => `mailto:${EMAIL}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(msg)}`;
+const TEL = `tel:+${WHATSAPP_NUMBER}`;
+// Every CTA opens the contact chooser with one of these prefilled messages.
+const CONTACT = {
+  consultation: { msg: "Hi BlackQuill, I'd like to book a free consultation.", subj: 'Free consultation — BlackQuill' },
+  quote: { msg: "Hi BlackQuill, I'd like a free quote for a new website.", subj: 'Website quote request — BlackQuill' },
+  general: { msg: "Hi BlackQuill, I'd like to get in touch.", subj: 'Enquiry — BlackQuill' },
+};
+const planContact = (plan: string) => ({ msg: `Hi BlackQuill, I'm interested in the ${plan} plan.`, subj: `${plan} plan enquiry — BlackQuill` });
 
 const NAV_ITEMS = [
   { name: 'Features', url: '#features' },
@@ -224,7 +228,16 @@ export function Landing() {
   const [dark, setDark] = useState(() => localStorage.getItem('bq-theme') === 'dark');
   const [yearly, setYearly] = useState(false);
   const [activeNav, setActiveNav] = useState('Features');
+  const [contact, setContact] = useState<{ msg: string; subj: string } | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
+  const openContact = (c: { msg: string; subj: string }) => (e: ReactMouseEvent) => { e.preventDefault(); setContact(c); };
+
+  useEffect(() => {
+    if (!contact) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setContact(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [contact]);
 
   useEffect(() => {
     registerDitherShader();
@@ -283,7 +296,7 @@ export function Landing() {
             );
           })}
         </div>
-        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bl-nav-cta">Get started</a>
+        <a href={waLink(CONTACT.consultation.msg)} onClick={openContact(CONTACT.consultation)} className="bl-nav-cta">Get started</a>
       </nav>
 
       <main>
@@ -298,8 +311,8 @@ export function Landing() {
             <h1 className="bl-hero-h1">Websites that turn<br />visitors into customers.</h1>
             <p className="bl-hero-p">We design and develop premium websites for startups, SMEs, and enterprises — optimized for speed, SEO, and conversions.</p>
             <div className="bl-btn-row">
-              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bl-btn bl-btn-primary">Book Free Consultation<ArrowIcon size={18} /></a>
-              <a href="#pricing" className="bl-btn bl-btn-secondary">Get a Free Quote</a>
+              <a href={waLink(CONTACT.consultation.msg)} onClick={openContact(CONTACT.consultation)} className="bl-btn bl-btn-primary">Book Free Consultation<ArrowIcon size={18} /></a>
+              <a href={waLink(CONTACT.quote.msg)} onClick={openContact(CONTACT.quote)} className="bl-btn bl-btn-secondary">Get a Free Quote</a>
               <a href="#work" className="bl-btn bl-btn-ghost">View Our Work →</a>
             </div>
             <div className="bl-hero-note">Free discovery call · Fixed-price quotes</div>
@@ -453,7 +466,7 @@ export function Landing() {
                   <span className="bl-plan-per">{yearly ? '/year' : '/month'}</span>
                 </div>
                 <p className="bl-plan-desc">{p.description}</p>
-                <a href={planEnquiry(p.name)} target="_blank" rel="noopener noreferrer" className="bl-plan-btn" style={btnStyle}>Get started</a>
+                <a href={waLink(planContact(p.name).msg)} onClick={openContact(planContact(p.name))} className="bl-plan-btn" style={btnStyle}>Get started</a>
                 <div className="bl-plan-includes">
                   <div className="bl-plan-includes-label">{p.includesLabel}</div>
                   {p.features.map((feat) => (
@@ -517,7 +530,7 @@ export function Landing() {
             <Badge />
             <h2 className="bl-cta-h2">Ready to build<br /><span className="bl-cta-h2-muted">your next website?</span></h2>
             <p className="bl-cta-p">Book your free strategy call today. Clean, fast, and uniquely yours.</p>
-            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bl-btn bl-btn-cta">Let's Build Together<ArrowIcon size={19} /></a>
+            <a href={waLink(CONTACT.consultation.msg)} onClick={openContact(CONTACT.consultation)} className="bl-btn bl-btn-cta">Let's Build Together<ArrowIcon size={19} /></a>
           </div>
         </div>
       </section>
@@ -556,7 +569,14 @@ export function Landing() {
           </div>
           <div className="bl-footer-col">
             <div className="bl-footer-col-title">Company</div>
-            {COMPANY_LINKS.map((l) => <a key={l.label} href={l.href} className="bl-footer-link">{l.label}</a>)}
+            {COMPANY_LINKS.map((l) => (
+              <a
+                key={l.label}
+                href={l.label === 'Contact' ? waLink(CONTACT.general.msg) : l.href}
+                onClick={l.label === 'Contact' ? openContact(CONTACT.general) : undefined}
+                className="bl-footer-link"
+              >{l.label}</a>
+            ))}
           </div>
           <div className="bl-footer-col">
             <div className="bl-footer-col-title">Work</div>
@@ -572,6 +592,31 @@ export function Landing() {
           <div>Crafted with care, shipped with pride.</div>
         </div>
       </footer>
+
+      {/* Contact chooser */}
+      {contact && (
+        <div className="bl-modal-overlay" onClick={() => setContact(null)} role="dialog" aria-modal="true" aria-label="Contact BlackQuill">
+          <div className="bl-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="bl-modal-close" aria-label="Close" onClick={() => setContact(null)}>×</button>
+            <h3 className="bl-modal-title">Let's talk<span className="bl-dot">.</span></h3>
+            <p className="bl-modal-sub">Pick how you'd like to reach us — we usually reply within a few hours.</p>
+            <div className="bl-modal-options">
+              <a className="bl-modal-opt" href={waLink(contact.msg)} target="_blank" rel="noopener noreferrer">
+                <span className="bl-modal-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3.1 4.3c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.3 3.8 2.1.8 2.6.7 3 .6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.2-1.5-.7c-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.5-.6c.1-.2.2-.3.1-.5l-.7-1.7c-.2-.4-.4-.4-.6-.4z" /></svg></span>
+                <span><span className="bl-modal-opt-t">WhatsApp</span><span className="bl-modal-opt-d">Fastest — chat with us now</span></span>
+              </a>
+              <a className="bl-modal-opt" href={TEL}>
+                <span className="bl-modal-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" /></svg></span>
+                <span><span className="bl-modal-opt-t">Call us</span><span className="bl-modal-opt-d">+91 81051 60830</span></span>
+              </a>
+              <a className="bl-modal-opt" href={mailLink(contact.msg, contact.subj)}>
+                <span className="bl-modal-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="m22 7-10 5L2 7" /></svg></span>
+                <span><span className="bl-modal-opt-t">Email</span><span className="bl-modal-opt-d">{EMAIL}</span></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Theme toggle */}
       <button className="bl-theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" onClick={toggleTheme}>

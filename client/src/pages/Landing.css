@@ -451,6 +451,40 @@
   align-items: center; flex-wrap: wrap; gap: 12px; color: var(--soft); font-size: 13px;
 }
 
+/* ---------- Contact chooser modal ---------- */
+@keyframes bl-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bl-rise-modal { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.bl-modal-overlay {
+  position: fixed; inset: 0; z-index: 200; background: rgba(10, 9, 8, 0.55); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center; padding: 20px; animation: bl-fade 0.2s ease;
+}
+.bl-modal {
+  position: relative; width: 100%; max-width: 400px; background: var(--card); border: 1px solid var(--line);
+  border-radius: 24px; padding: 32px 26px 26px; box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.4);
+  animation: bl-rise-modal 0.25s ease;
+}
+.bl-modal-close {
+  position: absolute; top: 14px; right: 16px; width: 32px; height: 32px; border: none; background: none;
+  color: var(--soft); font-size: 26px; line-height: 1; cursor: pointer; border-radius: 999px;
+}
+.bl-modal-close:hover { color: var(--ink); }
+.bl-modal-title { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 500; margin: 0 0 6px; }
+.bl-modal-sub { margin: 0 0 20px; font-size: 14px; color: var(--muted); line-height: 1.5; }
+.bl-modal-options { display: flex; flex-direction: column; gap: 10px; }
+.bl-modal-opt {
+  display: flex; align-items: center; gap: 14px; padding: 13px 16px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); text-decoration: none;
+  transition: border-color 0.2s, transform 0.1s;
+}
+.bl-modal-opt:hover { border-color: var(--accent); color: var(--ink); }
+.bl-modal-opt:active { transform: scale(0.99); }
+.bl-modal-ico {
+  width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--accent) 10%, transparent); color: var(--accent);
+}
+.bl-modal-opt-t { display: block; font-size: 15px; font-weight: 600; }
+.bl-modal-opt-d { display: block; font-size: 13px; color: var(--soft); }
+
 /* ---------- Theme toggle ---------- */
 .bl-theme-toggle {
   position: fixed; left: 22px; bottom: 22px; z-index: 100; width: 48px; height: 48px; border-radius: 999px;
