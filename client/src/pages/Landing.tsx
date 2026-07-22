@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState, MouseEvent as ReactMouseEvent, CSSProperties } from 'react';
-import { Link } from 'react-router-dom';
 import { registerDitherShader } from '../lib/ditherShader';
 import { initCursor, initPreloader, initScrollStack } from '../lib/pageFx';
 import { applyLandingSeo, LANDING_FAQ } from '../lib/seo';
@@ -24,10 +23,12 @@ const ACCENT = '#EC4E02';
 const SHADER_SPEED = 0.4;
 const DITHER_PIXEL = 2;
 
-// Consultation / "Let's build" CTAs open this scheduling page.
-const BOOKING_URL = 'https://cal.com/blackquill'; // TODO: replace with your real Calendly/cal.com link
-// Pricing "Get started" opens a WhatsApp chat prefilled with the chosen plan.
 const WHATSAPP_NUMBER = '918105160830';
+// Consultation CTAs ("Book Free Consultation", "Let's Build Together", nav "Get started").
+// Routed to WhatsApp so they work at launch — swap this one line for a
+// Calendly/cal.com URL once you have a scheduler.
+const BOOKING_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi BlackQuill, I'd like to book a free consultation.")}`;
+// Pricing "Get started" opens a WhatsApp chat prefilled with the chosen plan.
 const planEnquiry = (plan: string) =>
   `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi BlackQuill, I'm interested in the ${plan} plan.`)}`;
 
@@ -280,7 +281,7 @@ export function Landing() {
             );
           })}
         </div>
-        <Link to="/signin" className="bl-nav-cta">Get started</Link>
+        <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bl-nav-cta">Get started</a>
       </nav>
 
       <main>
@@ -417,7 +418,7 @@ export function Landing() {
         <div className="bl-head-center">
           <span className="bl-eyebrow">Pricing</span>
           <h2 className="bl-h2">Plans that work best for you.</h2>
-          <p className="bl-section-sub">Trusted by teams around the world. Explore which option is right for you.</p>
+          <p className="bl-section-sub">Trusted by founders and teams across India. Explore which option is right for you.</p>
           <div className="bl-toggle-wrap">
             <div className="bl-toggle">
               <div className="bl-toggle-pill" style={{ transform: `translateX(${yearly ? '100%' : '0%'})` }} />
