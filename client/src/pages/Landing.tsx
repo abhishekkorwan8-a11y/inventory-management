@@ -132,11 +132,60 @@ const INDUSTRIES: { name: string; icon: string; offset?: boolean }[] = [
   { name: 'Automotive', icon: 'M5 17H3v-5l2-5h12l4 5v5h-2M7 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0zM15 17a2 2 0 1 0 4 0 2 2 0 0 0-4 0z' },
 ];
 
+// Prices in INR. Adjust the numbers to your real rate card.
 const PLANS = [
-  { name: 'Launch', description: 'A polished single-page site for startups that need to be live yesterday.', price: 490, yearlyPrice: 4900, popular: false, includesLabel: 'Launch includes:', features: ['One-page custom design', 'Mobile-first build', 'Basic SEO setup', 'Launch in 2 weeks'] },
-  { name: 'Studio', description: 'Best value for growing businesses — a full site with ongoing care.', price: 990, yearlyPrice: 9900, popular: true, includesLabel: 'Everything in Launch, plus:', features: ['Up to 10 custom pages', 'CMS you can edit yourself', 'Performance & SEO tuning', 'Monthly updates & support'] },
-  { name: 'Partner', description: 'A dedicated web team for companies that ship constantly.', price: 2400, yearlyPrice: 24000, popular: false, includesLabel: 'Everything in Studio, plus:', features: ['Unlimited design requests', 'Custom web apps & integrations', 'A/B testing & analytics', 'Same-week turnaround'] },
+  {
+    name: 'Launch',
+    description: 'A polished starter site for new businesses that need to be online — fast, clean, and credible.',
+    price: 9999,
+    yearlyPrice: 99990,
+    popular: false,
+    includesLabel: 'Launch includes:',
+    features: [
+      'Custom 1–3 page design (no templates)',
+      'Mobile-first, responsive build',
+      'On-page SEO + meta & OpenGraph setup',
+      'Contact form + WhatsApp click-to-chat',
+      'Google Analytics & Search Console',
+      'Live in ~2 weeks',
+    ],
+  },
+  {
+    name: 'Studio',
+    description: 'A complete, self-manageable website with ongoing care — built to grow your traffic and leads.',
+    price: 24999,
+    yearlyPrice: 249990,
+    popular: true,
+    includesLabel: 'Everything in Launch, plus:',
+    features: [
+      'Up to 10 custom pages',
+      'Self-editable CMS (edit text & images)',
+      'Blog / portfolio setup',
+      'Core Web Vitals & speed tuning',
+      'Payments or booking integration',
+      'Monthly updates & priority support',
+    ],
+  },
+  {
+    name: 'Partner',
+    description: 'A dedicated web team for brands that ship constantly and need a partner, not a one-off project.',
+    price: 59999,
+    yearlyPrice: 599990,
+    popular: false,
+    includesLabel: 'Everything in Studio, plus:',
+    features: [
+      'Unlimited pages & design requests',
+      'Custom web apps & API integrations',
+      'E-commerce & multi-language support',
+      'A/B testing & conversion analytics',
+      'Dedicated project manager',
+      'Same-week turnaround with an SLA',
+    ],
+  },
 ];
+
+// Indian rupee formatting, e.g. 249990 → ₹2,49,990
+const inr = (n: number) => '₹' + n.toLocaleString('en-IN');
 
 const TECHNOLOGIES = [
   { name: 'HTML', dot: '#E44D26' }, { name: 'CSS', dot: '#264DE4' }, { name: 'JavaScript', dot: '#F0DB4F' },
@@ -393,7 +442,7 @@ export function Landing() {
                 {p.popular && <div className="bl-plan-badge">Most popular</div>}
                 <h3 className="bl-plan-name">{p.name}</h3>
                 <div className="bl-plan-price-row">
-                  <span className="bl-plan-price">${yearly ? p.yearlyPrice : p.price}</span>
+                  <span className="bl-plan-price">{inr(yearly ? p.yearlyPrice : p.price)}</span>
                   <span className="bl-plan-per">{yearly ? '/year' : '/month'}</span>
                 </div>
                 <p className="bl-plan-desc">{p.description}</p>

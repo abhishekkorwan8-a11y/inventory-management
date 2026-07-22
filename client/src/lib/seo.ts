@@ -21,7 +21,7 @@ export interface LandingFaq {
 export const LANDING_FAQ: LandingFaq[] = [
   {
     q: 'How much does a custom website cost?',
-    a: 'Our plans start at $490 for a polished one-page launch site and scale to full multi-page platforms. Every project gets a fixed-price quote after a free discovery call, so there are no surprises.',
+    a: 'Our plans start at ₹9,999/month for a polished starter site and scale to full multi-page platforms and web apps. Every project also gets a fixed-price quote after a free discovery call, so there are no surprises.',
   },
   {
     q: 'How long does it take to build a website?',
@@ -132,9 +132,9 @@ export function applyLandingSeo(): () => void {
         provider: { '@id': `${SITE}/#organization` },
         areaServed: 'Worldwide',
         offers: [
-          { '@type': 'Offer', name: 'Launch', price: '490', priceCurrency: 'USD' },
-          { '@type': 'Offer', name: 'Studio', price: '990', priceCurrency: 'USD' },
-          { '@type': 'Offer', name: 'Partner', price: '2400', priceCurrency: 'USD' },
+          { '@type': 'Offer', name: 'Launch', price: '9999', priceCurrency: 'INR' },
+          { '@type': 'Offer', name: 'Studio', price: '24999', priceCurrency: 'INR' },
+          { '@type': 'Offer', name: 'Partner', price: '59999', priceCurrency: 'INR' },
         ],
       },
       {
