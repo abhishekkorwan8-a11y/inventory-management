@@ -24,6 +24,13 @@ const ACCENT = '#EC4E02';
 const SHADER_SPEED = 0.4;
 const DITHER_PIXEL = 2;
 
+// Consultation / "Let's build" CTAs open this scheduling page.
+const BOOKING_URL = 'https://cal.com/blackquill'; // TODO: replace with your real Calendly/cal.com link
+// Pricing "Get started" opens a WhatsApp chat prefilled with the chosen plan.
+const WHATSAPP_NUMBER = '918105160830';
+const planEnquiry = (plan: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hi BlackQuill, I'm interested in the ${plan} plan.`)}`;
+
 const NAV_ITEMS = [
   { name: 'Features', url: '#features' },
   { name: 'How it works', url: '#how' },
@@ -239,7 +246,7 @@ export function Landing() {
             <h1 className="bl-hero-h1">Websites that turn<br />visitors into customers.</h1>
             <p className="bl-hero-p">We design and develop premium websites for startups, SMEs, and enterprises — optimized for speed, SEO, and conversions.</p>
             <div className="bl-btn-row">
-              <Link to="/signin" className="bl-btn bl-btn-primary">Book Free Consultation<ArrowIcon size={18} /></Link>
+              <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bl-btn bl-btn-primary">Book Free Consultation<ArrowIcon size={18} /></a>
               <a href="#pricing" className="bl-btn bl-btn-secondary">Get a Free Quote</a>
               <a href="#work" className="bl-btn bl-btn-ghost">View Our Work →</a>
             </div>
@@ -390,7 +397,7 @@ export function Landing() {
                   <span className="bl-plan-per">{yearly ? '/year' : '/month'}</span>
                 </div>
                 <p className="bl-plan-desc">{p.description}</p>
-                <Link to="/signin" className="bl-plan-btn" style={btnStyle}>Get started</Link>
+                <a href={planEnquiry(p.name)} target="_blank" rel="noopener noreferrer" className="bl-plan-btn" style={btnStyle}>Get started</a>
                 <div className="bl-plan-includes">
                   <div className="bl-plan-includes-label">{p.includesLabel}</div>
                   {p.features.map((feat) => (
@@ -454,7 +461,7 @@ export function Landing() {
             <Badge />
             <h2 className="bl-cta-h2">Ready to build<br /><span className="bl-cta-h2-muted">your next website?</span></h2>
             <p className="bl-cta-p">Book your free strategy call today. Clean, fast, and uniquely yours.</p>
-            <Link to="/signin" className="bl-btn bl-btn-cta">Let's Build Together<ArrowIcon size={19} /></Link>
+            <a href={BOOKING_URL} target="_blank" rel="noopener noreferrer" className="bl-btn bl-btn-cta">Let's Build Together<ArrowIcon size={19} /></a>
           </div>
         </div>
       </section>
