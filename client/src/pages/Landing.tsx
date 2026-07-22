@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, MouseEvent as ReactMouseEvent, CSSProperties } from 'react';
+import { useEffect, useRef, useState, MouseEvent as ReactMouseEvent, FormEvent, CSSProperties } from 'react';
 import { registerDitherShader } from '../lib/ditherShader';
 import { initCursor, initPreloader, initScrollStack } from '../lib/pageFx';
 import { applyLandingSeo, LANDING_FAQ } from '../lib/seo';
@@ -231,6 +231,15 @@ export function Landing() {
   const [contact, setContact] = useState<{ msg: string; subj: string } | null>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const openContact = (c: { msg: string; subj: string }) => (e: ReactMouseEvent) => { e.preventDefault(); setContact(c); };
+  const [sent, setSent] = useState(false);
+  const scrollToContact = () => { setContact(null); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); };
+  const submitForm = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const body = new URLSearchParams(new FormData(e.currentTarget) as unknown as Record<string, string>).toString();
+    fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body })
+      .then(() => setSent(true))
+      .catch(() => setSent(true));
+  };
 
   useEffect(() => {
     if (!contact) return;
@@ -550,6 +559,36 @@ export function Landing() {
           ))}
         </div>
       </section>
+
+      {/* Contact */}
+      <section id="contact" className="bl-contact">
+        <div className="bl-head-center">
+          <span className="bl-eyebrow">Contact</span>
+          <h2 className="bl-h2">Start your project.</h2>
+          <p className="bl-section-sub">Tell us what you need and we'll reply within a few hours — or reach us on WhatsApp.</p>
+        </div>
+        {sent ? (
+          <div className="bl-form-done">
+            <div className="bl-form-done-ico">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+            </div>
+            <h3 className="bl-card-h3">Message sent</h3>
+            <p className="bl-card-p">Thanks — we've got it and will be in touch shortly.</p>
+          </div>
+        ) : (
+          <form name="contact" method="POST" data-netlify="true" onSubmit={submitForm} className="bl-form">
+            <input type="hidden" name="form-name" value="contact" />
+            <p className="bl-hp"><label>Don't fill this out if you're human: <input name="bot-field" /></label></p>
+            <div className="bl-form-row">
+              <label className="bl-label">Full name<input className="bl-input" name="name" type="text" required placeholder="Your name" /></label>
+              <label className="bl-label">Email<input className="bl-input" name="email" type="email" required placeholder="you@company.com" /></label>
+            </div>
+            <label className="bl-label">Company <span className="bl-opt">(optional)</span><input className="bl-input" name="company" type="text" placeholder="Company or brand" /></label>
+            <label className="bl-label">Project details<textarea className="bl-input bl-textarea" name="message" rows={4} required placeholder="What are you building? Share goals, timeline, and a rough budget."></textarea></label>
+            <button type="submit" className="bl-btn bl-btn-cta bl-form-submit">Send message<ArrowIcon size={18} /></button>
+          </form>
+        )}
+      </section>
       </main>
 
       {/* Footer */}
@@ -601,6 +640,10 @@ export function Landing() {
             <h3 className="bl-modal-title">Let's talk<span className="bl-dot">.</span></h3>
             <p className="bl-modal-sub">Pick how you'd like to reach us — we usually reply within a few hours.</p>
             <div className="bl-modal-options">
+              <button type="button" className="bl-modal-opt" onClick={scrollToContact}>
+                <span className="bl-modal-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" /></svg></span>
+                <span><span className="bl-modal-opt-t">Send a message</span><span className="bl-modal-opt-d">Fill a quick form — we'll reply by email</span></span>
+              </button>
               <a className="bl-modal-opt" href={waLink(contact.msg)} target="_blank" rel="noopener noreferrer">
                 <span className="bl-modal-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3.1 4.3c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.3 3.8 2.1.8 2.6.7 3 .6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.2-1.5-.7c-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.5-.6c.1-.2.2-.3.1-.5l-.7-1.7c-.2-.4-.4-.4-.6-.4z" /></svg></span>
                 <span><span className="bl-modal-opt-t">WhatsApp</span><span className="bl-modal-opt-d">Fastest — chat with us now</span></span>
@@ -617,6 +660,18 @@ export function Landing() {
           </div>
         </div>
       )}
+
+      {/* Floating WhatsApp */}
+      <a
+        className="bl-wa-float"
+        href={waLink(CONTACT.general.msg)}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with us on WhatsApp"
+        title="Chat on WhatsApp"
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.7 14.9L2 22l5.3-1.3A10 10 0 1 0 12 2zm0 1.8a8.2 8.2 0 1 1-4.2 15.3l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 0 1 12 3.8zm-3.1 4.3c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.1s.9 2.4 1 2.6c.1.2 1.8 2.8 4.3 3.8 2.1.8 2.6.7 3 .6.5 0 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.4-.2-1.5-.7c-.2-.1-.4-.1-.5.1l-.7.9c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.1-.2 0-.4.1-.5l.5-.6c.1-.2.2-.3.1-.5l-.7-1.7c-.2-.4-.4-.4-.6-.4z" /></svg>
+      </a>
 
       {/* Theme toggle */}
       <button className="bl-theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode" onClick={toggleTheme}>
