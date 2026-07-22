@@ -63,7 +63,7 @@ const WORK = [
 // Replace the placeholder URLs below with your real profiles / pages.
 const SOCIAL_LINKS = {
   x: 'https://x.com/BlackQuillin',
-  linkedin: 'https://linkedin.com/company/your-company', // TODO: replace with real LinkedIn
+  linkedin: 'https://www.linkedin.com/in/abhishek-korwan-875370424/',
   instagram: 'https://www.instagram.com/blackquill.in',
   github: 'https://github.com/abhishekkorwan8-a11y',
   whatsapp: 'https://wa.me/918105160830', // temporary personal number (+91); swap for a business number

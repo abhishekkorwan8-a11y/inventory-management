@@ -99,6 +99,7 @@ export function applyLandingSeo(): () => void {
           'https://x.com/BlackQuillin',
           'https://www.instagram.com/blackquill.in',
           'https://www.facebook.com/profile.php?id=61592221862115',
+          'https://www.linkedin.com/in/abhishek-korwan-875370424/',
           'https://github.com/abhishekkorwan8-a11y',
         ],
       },
