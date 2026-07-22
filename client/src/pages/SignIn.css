@@ -1,0 +1,337 @@
+/* BlackQuill sign-in page — scoped styles (imported by SignIn.tsx).
+   Ported from the "Sign In.dc.html" Claude Design file. Theme-aware via
+   CSS variables scoped to .bq-root[data-theme]. */
+
+@keyframes bq-riseIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.bq-root {
+  --accent: #EC4E02;
+  /* light theme (default) */
+  --bg: #F5EEE1;
+  --card: #FCF7EC;
+  --ink: #201D18;
+  --muted: #6E675C;
+  --soft: #8A8375;
+  --navlink: #544E44;
+  --line: rgba(32, 29, 24, 0.28);
+  --line2: rgba(32, 29, 24, 0.16);
+  --line-strong: rgba(32, 29, 24, 0.42);
+  --glass: rgba(252, 247, 236, 0.75);
+  --blend: multiply;
+
+  min-height: 100vh;
+  display: flex;
+  gap: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s, color 0.3s;
+}
+
+.bq-root[data-theme='dark'] {
+  --bg: #171310;
+  --card: #221D17;
+  --ink: #F1EADB;
+  --muted: #A89F8F;
+  --soft: #7D7466;
+  --navlink: #B7AD9C;
+  --line: rgba(241, 234, 219, 0.18);
+  --line2: rgba(241, 234, 219, 0.12);
+  --line-strong: rgba(241, 234, 219, 0.34);
+  --glass: rgba(34, 29, 23, 0.7);
+  --blend: screen;
+}
+
+.bq-root ::selection { background: color-mix(in srgb, var(--accent) 25%, transparent); }
+.bq-root input::placeholder { color: var(--soft); }
+
+.bq-rise { animation: bq-riseIn 0.5s ease both; }
+
+/* ---------- Left: form column ---------- */
+.bq-form-col {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+}
+.bq-form-wrap {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.bq-logo {
+  font-family: 'Newsreader', serif;
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.bq-dot { color: var(--accent); }
+.bq-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.bq-h1 {
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  font-size: clamp(38px, 4vw, 50px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+.bq-sub {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* ---------- Form ---------- */
+.bq-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.bq-label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--navlink);
+}
+.bq-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 52px;
+  padding: 0 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.bq-input:focus { border-color: var(--accent); }
+.bq-pw-wrap { position: relative; display: block; }
+.bq-input-pw { padding: 0 52px 0 18px; }
+.bq-pw-toggle {
+  position: absolute;
+  top: 0;
+  right: 6px;
+  height: 52px;
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--soft);
+}
+.bq-pw-toggle:hover { color: var(--ink); }
+
+.bq-remember-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+}
+.bq-remember {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  color: var(--navlink);
+}
+.bq-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+}
+.bq-reset {
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--accent);
+}
+.bq-reset:hover { text-decoration: underline; }
+
+.bq-submit {
+  height: 54px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 15.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.15s;
+}
+.bq-submit:hover { filter: brightness(1.08); }
+.bq-submit:active { transform: scale(0.98); }
+
+/* ---------- Divider + Google ---------- */
+.bq-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bq-divider-line { width: 100%; border-top: 1px solid var(--line2); }
+.bq-divider-text {
+  position: absolute;
+  padding: 0 14px;
+  font-size: 13.5px;
+  color: var(--soft);
+  background: var(--bg);
+}
+.bq-google {
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.bq-google:hover { border-color: var(--line-strong); }
+
+.bq-switch {
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+}
+.bq-switch-link {
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+.bq-switch-link:hover { text-decoration: underline; }
+
+/* ---------- Right: aside panel ---------- */
+.bq-aside {
+  flex: 1;
+  position: relative;
+  padding: 16px 16px 16px 0;
+  display: flex;
+}
+.bq-aside-panel {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 36px;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+.bq-aside-shader {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.42;
+  mix-blend-mode: var(--blend);
+}
+.bq-aside-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 52px 48px;
+  box-sizing: border-box;
+}
+.bq-aside-title {
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  font-size: clamp(30px, 2.8vw, 44px);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  max-width: 420px;
+  text-wrap: balance;
+}
+.bq-testimonials {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.bq-testimonial {
+  flex: 1;
+  min-width: 220px;
+  max-width: 300px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  padding: 18px;
+}
+.bq-avatar {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Newsreader', serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--accent);
+}
+.bq-testimonial-body { font-size: 13.5px; line-height: 1.5; }
+.bq-testimonial-name { font-weight: 600; }
+.bq-testimonial-handle { color: var(--soft); }
+.bq-testimonial-text { margin-top: 5px; color: var(--muted); }
+
+/* ---------- Theme toggle ---------- */
+.bq-theme-toggle {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 100;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: var(--glass);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.14);
+  transition: transform 0.2s;
+}
+.bq-theme-toggle:hover { transform: scale(1.08); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .bq-aside { display: none; }
+}

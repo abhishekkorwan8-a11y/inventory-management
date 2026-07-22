@@ -1,0 +1,12 @@
+[build]
+  command = "npm install && npm run build --workspace client"
+  publish = "client/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# SPA fallback (also covered by client/public/_redirects)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
