@@ -8,9 +8,10 @@
 // or prerendered. Replace the placeholder URLs / NAP / social links below with
 // real values before going live.
 
-const SITE = 'https://www.blackquill.com';
+const SITE = 'https://blackquill.in';
 const PAGE_URL = `${SITE}/`;
 const OG_IMAGE = `${SITE}/og-cover.png`;
+const CONTACT_EMAIL = 'abhishek@blackquill.in';
 
 export interface LandingFaq {
   q: string;
@@ -88,6 +89,12 @@ export function applyLandingSeo(): () => void {
         url: SITE,
         description,
         logo: `${SITE}/logo.png`,
+        email: CONTACT_EMAIL,
+        contactPoint: {
+          '@type': 'ContactPoint',
+          email: CONTACT_EMAIL,
+          contactType: 'customer support',
+        },
         sameAs: [
           'https://x.com/BlackQuillin',
           'https://www.instagram.com/blackquill.in',

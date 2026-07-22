@@ -66,7 +66,7 @@ const COMPANY_LINKS = [
   { label: 'About Us', href: '#how' },
   { label: 'Careers', href: '#cta' },
   { label: 'Blog', href: '#top' },
-  { label: 'Contact', href: '#cta' },
+  { label: 'Contact', href: 'mailto:abhishek@blackquill.in' },
 ];
 const WORK_LINKS = [
   { label: 'Services', href: '#features' },
