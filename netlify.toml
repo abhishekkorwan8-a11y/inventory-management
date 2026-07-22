@@ -5,6 +5,13 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Force www → apex so there's one canonical host (matches https://blackquill.in)
+[[redirects]]
+  from = "https://www.blackquill.in/*"
+  to = "https://blackquill.in/:splat"
+  status = 301
+  force = true
+
 # SPA fallback (also covered by client/public/_redirects)
 [[redirects]]
   from = "/*"
