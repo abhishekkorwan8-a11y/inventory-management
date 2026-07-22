@@ -7,7 +7,7 @@ import { getActingUser, setActingUser, MeInfo } from '../lib/api';
 import { useApi } from '../lib/useApi';
 
 const NAV = [
-  { to: '/', label: 'Dashboard', icon: IconDashboard, end: true },
+  { to: '/dashboard', label: 'Dashboard', icon: IconDashboard, end: true },
   { to: '/products', label: 'Products', icon: IconBox },
   { to: '/purchase-orders', label: 'Purchase Orders', icon: IconTruck },
   { to: '/sales', label: 'Sales', icon: IconCart },

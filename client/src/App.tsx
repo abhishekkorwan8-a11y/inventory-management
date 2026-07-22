@@ -14,15 +14,17 @@ import { LowStock } from './pages/LowStock';
 export default function App() {
   return (
     <Routes>
-      {/* Standalone marketing landing page — rendered outside the app Layout */}
+      {/* Public marketing site — the landing page is the site root */}
+      <Route path="/" element={<Landing />} />
       <Route path="/landing" element={<Landing />} />
       <Route path="/signin" element={<SignIn />} />
+      {/* Internal inventory app, kept under its own paths (Dashboard at /dashboard) */}
       <Route
         path="*"
         element={
           <Layout>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/:id" element={<ProductDetail />} />
               <Route path="/purchase-orders" element={<PurchaseOrders />} />
