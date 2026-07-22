@@ -89,10 +89,10 @@ export function applyLandingSeo(): () => void {
         description,
         logo: `${SITE}/logo.png`,
         sameAs: [
-          'https://x.com/your-handle',
-          'https://linkedin.com/company/your-company',
-          'https://instagram.com/your-handle',
-          'https://github.com/your-org',
+          'https://x.com/BlackQuillin',
+          'https://www.instagram.com/blackquill.in',
+          'https://www.facebook.com/profile.php?id=61592221862115',
+          'https://github.com/abhishekkorwan8-a11y',
         ],
       },
       {
