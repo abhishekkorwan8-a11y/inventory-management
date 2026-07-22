@@ -39,6 +39,8 @@ const NAV_ITEMS = [
   { name: 'Pricing', url: '#pricing' },
 ];
 
+const GUARANTEES = ['Fixed-price quotes', 'Launch in ~2 weeks', 'Unlimited revisions', 'You own the code & CMS'];
+
 const FEATURES = [
   { icon: 'M12 20h9M16.7 3.3a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.7 3.3z', title: 'Design that fits', body: 'No templates. We study your brand — its voice, colors, and customers — and design a site that could only belong to you.' },
   { icon: 'M12 3l1.9 5.7 5.8 1.9-5.8 1.9L12 18.2l-1.9-5.7-5.8-1.9 5.8-1.9L12 3zM19 14.5l1 2.7 2.7 1-2.7 1-1 2.7-1-2.7-2.7-1 2.7-1 1-2.7z', title: 'Fast by default', body: 'Hand-tuned code, no bloat. Every site we ship scores green on Core Web Vitals and loads in under a second.' },
@@ -305,18 +307,22 @@ export function Landing() {
         </div>
       </section>
 
-      {/* Trust bar */}
-      <section className="bl-trust">
-        <div className="bl-trust-inner">
-          <div className="bl-trust-stat">
-            <div className="bl-trust-num">100<span className="bl-dot">+</span></div>
-            <div className="bl-trust-label">Businesses served</div>
+      {/* Guarantee bar */}
+      <section className="bl-guarantee">
+        <div className="bl-guarantee-inner">
+          <div className="bl-guarantee-offer">
+            <span className="bl-badge-dot"><span className="bl-badge-ping" /><span className="bl-badge-core" /></span>
+            Now taking our first 5 clients — founding-client pricing
           </div>
-          <div className="bl-trust-divider" />
-          <div className="bl-trust-logos">
-            <span className="bl-trust-logo">Google</span>
-            <span className="bl-trust-logo">Meta</span>
-            <span className="bl-trust-logo">Microsoft</span>
+          <div className="bl-guarantee-row">
+            {GUARANTEES.map((g) => (
+              <div key={g} className="bl-guarantee-item">
+                <span className="bl-guarantee-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round"><path d="M20 6L9 17l-5-5" /></svg>
+                </span>
+                {g}
+              </div>
+            ))}
           </div>
         </div>
       </section>
